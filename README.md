@@ -2,7 +2,7 @@
 
 Manual em formato de slides (52) sobre o Gemini Notebook (o antigo NotebookLM, renomeado em 16/07/2026) para pós-graduação: começar (conta, página inicial, notebook e os três painéis), fontes (o que aceita e em que limite, «Adicionar fontes», URLs de editoras que falham, Descobrir fontes, Drive, seleção e rótulos), conversar com as fontes (perguntas boas para pesquisa, citações numeradas e o trecho, «Salvar como nota», estilos de conversa), Estúdio (Resumo em Áudio e em Vídeo, mapa mental, relatórios, cartões, teste, infográfico, apresentação, tabela de dados), seis fluxos de pesquisa (triagem de PDFs, leitura profunda IMRaD, matriz de síntese, aula, banca, ponte com o Zotero e os agentes), colaboração, limites, privacidade e ética, erros comuns, checklist, glossário com popovers e referências. Capturas reais e datadas (08/09/2026) da interface em português, feitas num notebook de exemplo com artigos de acesso aberto.
 
-**Manual on-line:** https://manual.mirandastech.com.br/gemini-notebook/ · **PDF:** https://manual.mirandastech.com.br/gemini-notebook/manual.pdf
+**Manual on-line:** https://notebook.mirandastech.com.br/ · **PDF:** https://notebook.mirandastech.com.br/manual.pdf
 
 Manuais irmãos: **Metodologia** — https://metodologia.mirandastech.com.br/ · **Zotero** — https://manual.mirandastech.com.br/zotero/ · **Uso de IA na pesquisa** — https://manual.mirandastech.com.br/
 
