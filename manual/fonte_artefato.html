@@ -1,0 +1,1683 @@
+<meta charset="utf-8">
+<title>MirandasTech · Gemini Notebook para pesquisa científica</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+
+:root{
+  --paper:#F1F4F7; --surface:#FFFFFF; --surface-2:#F8FAFB;
+  --ink:#101720; --ink-2:#4A5866; --ink-3:#75828E;
+  --rule:#D3DAE1; --rule-2:#E5EAEF;
+  --blueprint:#17436B; --blueprint-2:#2C6396; --blueprint-soft:#E4EDF5;
+  --signal:#C4530E; --signal-soft:#FBEADD;
+  --go:#186B50; --go-soft:#E0EFE9;
+  --stop:#A0231C; --stop-soft:#F9E5E3;
+  --amber:#8A6000; --amber-soft:#F9EFD6;
+  --shadow:0 1px 2px rgba(16,23,32,.06),0 8px 24px -12px rgba(16,23,32,.18);
+  --serif:'Spectral',Georgia,'Times New Roman',serif;
+  --cond:'IBM Plex Sans Condensed','Helvetica Neue',Arial,sans-serif;
+  --mono:'IBM Plex Mono','SFMono-Regular',Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0C1218; --surface:#131B23; --surface-2:#182129;
+    --ink:#E3E9EF; --ink-2:#94A3B1; --ink-3:#71808E;
+    --rule:#26313C; --rule-2:#1E2831;
+    --blueprint:#7DB2DF; --blueprint-2:#A3CAEB; --blueprint-soft:#15283A;
+    --signal:#EE8A46; --signal-soft:#33200F;
+    --go:#54C398; --go-soft:#0F2620;
+    --stop:#EC7B72; --stop-soft:#2D1614;
+    --amber:#DCAC3D; --amber-soft:#2A2110;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0C1218; --surface:#131B23; --surface-2:#182129;
+  --ink:#E3E9EF; --ink-2:#94A3B1; --ink-3:#71808E;
+  --rule:#26313C; --rule-2:#1E2831;
+  --blueprint:#7DB2DF; --blueprint-2:#A3CAEB; --blueprint-soft:#15283A;
+  --signal:#EE8A46; --signal-soft:#33200F;
+  --go:#54C398; --go-soft:#0F2620;
+  --stop:#EC7B72; --stop-soft:#2D1614;
+  --amber:#DCAC3D; --amber-soft:#2A2110;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+:focus-visible{outline:2px solid var(--blueprint-2);outline-offset:3px;border-radius:2px}
+
+/* ---------- sections ---------- */
+.part{padding-top:56px}
+.part-head{display:flex;align-items:baseline;gap:14px;border-top:1px solid var(--rule);padding-top:14px;margin-bottom:8px}
+.part-num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--signal);font-weight:600}
+.part-label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+h2{font-family:var(--cond);font-weight:700;font-size:clamp(27px,3.6vw,38px);line-height:1.12;letter-spacing:-.012em;margin:6px 0 0;text-wrap:balance;max-width:22ch}
+h3{font-family:var(--cond);font-weight:600;font-size:22px;line-height:1.25;margin:40px 0 0;color:var(--ink);text-wrap:balance}
+h4{font-family:var(--cond);font-weight:600;font-size:17px;line-height:1.3;margin:26px 0 0;color:var(--blueprint);letter-spacing:.01em}
+p,ul,ol{max-width:68ch}
+p{margin:14px 0 0}
+ul,ol{margin:14px 0 0;padding-left:22px}
+li{margin:7px 0}
+li::marker{color:var(--blueprint)}
+strong{font-weight:600;color:var(--ink)}
+em{font-style:italic}
+a{color:var(--blueprint);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
+code{font-family:var(--mono);font-size:.855em;background:var(--surface-2);border:1px solid var(--rule-2);padding:1px 5px;border-radius:3px;color:var(--ink)}
+.dek{font-size:18px;color:var(--ink-2);max-width:64ch;margin:16px 0 0;line-height:1.6}
+
+/* ---------- blocks ---------- */
+.rule-box,.trap,.case,.note{margin:24px 0 0;padding:16px 20px;border-radius:4px;max-width:74ch;border-left:3px solid}
+.rule-box{background:var(--blueprint-soft);border-left-color:var(--blueprint)}
+.trap{background:var(--signal-soft);border-left-color:var(--signal)}
+.case{background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--go)}
+.note{background:var(--surface-2);border-left-color:var(--ink-3)}
+.blabel{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;font-weight:600;display:block;margin-bottom:7px}
+.rule-box .blabel{color:var(--blueprint)}
+.trap .blabel{color:var(--signal)}
+.case .blabel{color:var(--go)}
+.note .blabel{color:var(--ink-3)}
+.rule-box p:first-of-type,.trap p:first-of-type,.case p:first-of-type,.note p:first-of-type{margin-top:0}
+.rule-box p,.trap p,.case p,.rule-box li,.trap li,.case li,.note p,.note li{max-width:none;font-size:16px}
+.case .src{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-top:10px;display:block;line-height:1.5}
+
+/* ---------- figures ---------- */
+figure{margin:34px 0 0;max-width:none}
+figcaption{font-family:var(--cond);font-size:13.5px;color:var(--ink-2);margin-top:11px;line-height:1.5;max-width:76ch}
+figcaption b{font-family:var(--mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--signal);font-weight:600;margin-right:7px}
+.frame{border:1px solid var(--rule);background:var(--surface);border-radius:4px;padding:24px;overflow-x:auto}
+
+/* ---------- tables ---------- */
+.tw{overflow-x:auto;margin:26px 0 0;border:1px solid var(--rule);border-radius:4px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-family:var(--cond);font-size:14.5px;min-width:520px}
+th{text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);font-weight:600;padding:11px 14px;border-bottom:1px solid var(--rule);background:var(--surface-2);vertical-align:bottom}
+td{padding:11px 14px;border-bottom:1px solid var(--rule-2);vertical-align:top;line-height:1.45;color:var(--ink)}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:13px;white-space:nowrap}
+td.mono{font-family:var(--mono);font-size:12.5px}
+.pill{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;font-weight:600;text-transform:uppercase;padding:2.5px 8px;border-radius:20px;white-space:nowrap}
+.p-go{background:var(--go-soft);color:var(--go)}
+.p-amber{background:var(--amber-soft);color:var(--amber)}
+.p-stop{background:var(--stop-soft);color:var(--stop)}
+.p-blue{background:var(--blueprint-soft);color:var(--blueprint)}
+
+/* ---------- terminal ---------- */
+.term{background:#0B1219;border:1px solid #223040;border-radius:5px;overflow:hidden;margin:26px 0 0}
+.term-bar{display:flex;align-items:center;gap:7px;padding:8px 13px;background:#141F2B;border-bottom:1px solid #223040}
+.term-dot{width:9px;height:9px;border-radius:50%;background:#33445A}
+.term-title{font-family:var(--mono);font-size:10.5px;color:#7A8B9C;margin-left:8px;letter-spacing:.05em}
+.term pre{margin:0;padding:15px 16px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.62;color:#C9D6E2}
+.term .c-p{color:#5FA8DC}
+.term .c-o{color:#E8A055}
+.term .c-g{color:#5FC79A}
+.term .c-m{color:#71828F}
+.term .c-r{color:#E8776C}
+
+/* ---------- code ---------- */
+.code{background:var(--surface-2);border:1px solid var(--rule);border-radius:4px;margin:24px 0 0;overflow:hidden}
+.code-head{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);padding:8px 14px;border-bottom:1px solid var(--rule);background:var(--surface)}
+.code pre{margin:0;padding:14px 16px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.66;color:var(--ink)}
+.code .k{color:var(--blueprint);font-weight:500}
+.code .s{color:var(--go)}
+.code .cm{color:var(--ink-3);font-style:italic}
+
+/* ---------- charts ---------- */
+.bars{display:flex;flex-direction:column;gap:11px;margin:0}
+.bar-row{display:grid;grid-template-columns:minmax(96px,152px) minmax(0,1fr) 62px;gap:12px;align-items:center}
+.bar-lab{font-family:var(--cond);font-size:13.5px;color:var(--ink-2);line-height:1.25;text-align:right}
+.bar-track{background:var(--rule-2);border-radius:2px;height:22px;position:relative;overflow:hidden}
+.bar-fill{height:100%;border-radius:2px;background:var(--blueprint)}
+.bar-fill.f-signal{background:var(--signal)}
+.bar-fill.f-go{background:var(--go)}
+.bar-fill.f-stop{background:var(--stop)}
+.bar-fill.f-amber{background:var(--amber)}
+.bar-fill.f-mute{background:var(--ink-3)}
+.bar-val{font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink);text-align:right;font-weight:500}
+.bar-zero{font-family:var(--mono);font-size:11px;color:var(--stop);font-weight:600;position:absolute;left:4px;top:50%;transform:translateY(-50%)}
+@media (max-width:560px){.bar-row{grid-template-columns:minmax(72px,102px) minmax(0,1fr) 52px;gap:8px}.bar-lab{font-size:12px}}
+
+/* funnel */
+.funnel{display:flex;flex-direction:column;gap:8px;align-items:center}
+.fstep{border:1px solid var(--rule);background:var(--surface-2);border-radius:4px;padding:12px 18px;text-align:center;width:100%;max-width:640px;position:relative}
+.fstep .fn{font-family:var(--mono);font-size:26px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1}
+.fstep .ft{font-family:var(--cond);font-size:13.5px;color:var(--ink-2);margin-top:5px;line-height:1.35}
+.fstep.hl{border-color:var(--signal);background:var(--signal-soft)}
+.fstep.hl .fn{color:var(--signal)}
+.fdrop{font-family:var(--mono);font-size:11.5px;color:var(--stop);text-align:center;line-height:1.4}
+
+/* flow map */
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:10px}
+.node{border:1px solid var(--rule);border-radius:4px;background:var(--surface-2);padding:12px 13px;display:flex;flex-direction:column;gap:6px}
+.node .nn{font-family:var(--mono);font-size:10px;letter-spacing:.11em;color:var(--ink-3);font-weight:600}
+.node .nt{font-family:var(--cond);font-size:15px;font-weight:600;line-height:1.22;color:var(--ink)}
+.node .nd{font-size:13px;color:var(--ink-2);line-height:1.45;font-family:var(--cond)}
+.node .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
+.node.gate{border-color:var(--stop);background:var(--stop-soft)}
+.node.gate .nn{color:var(--stop)}
+
+/* two-column compare */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule);border-radius:4px;overflow:hidden;background:var(--surface)}
+.compare>div{padding:18px 20px}
+.compare>div:first-child{border-right:1px solid var(--rule)}
+.cmp-h{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:600;margin-bottom:10px}
+.compare ul{margin:0;padding-left:18px;max-width:none}
+.compare li{font-family:var(--cond);font-size:14.5px;line-height:1.45;margin:8px 0;color:var(--ink)}
+@media (max-width:640px){.compare{grid-template-columns:1fr}.compare>div:first-child{border-right:0;border-bottom:1px solid var(--rule)}}
+
+/* ui schematic */
+.ui{border:1px solid var(--rule);border-radius:5px;overflow:hidden;background:var(--surface);font-family:var(--cond)}
+.ui-bar{background:var(--surface-2);border-bottom:1px solid var(--rule);padding:7px 12px;font-family:var(--mono);font-size:10.5px;color:var(--ink-3);letter-spacing:.06em;display:flex;justify-content:space-between;align-items:center}
+.ui-body{display:grid;grid-template-columns:170px minmax(0,1fr);min-height:150px}
+.ui-side{border-right:1px solid var(--rule);padding:10px;background:var(--surface-2);font-size:13px;color:var(--ink-2)}
+.ui-side div{padding:3.5px 6px;border-radius:3px;line-height:1.3}
+.ui-side div.sel{background:var(--blueprint-soft);color:var(--blueprint);font-weight:600}
+.ui-main{padding:10px}
+.ui-row{display:grid;grid-template-columns:minmax(0,1fr) 78px 46px;gap:9px;padding:6px 7px;border-bottom:1px solid var(--rule-2);font-size:13px;align-items:center;color:var(--ink)}
+.ui-row.head{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);border-bottom:1px solid var(--rule)}
+.ui-row span:nth-child(2),.ui-row span:nth-child(3){font-family:var(--mono);font-size:11.5px;color:var(--ink-2)}
+.schematic-tag{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);border:1px dashed var(--rule);padding:2px 7px;border-radius:3px}
+@media (max-width:560px){.ui-body{grid-template-columns:1fr}.ui-side{border-right:0;border-bottom:1px solid var(--rule)}}
+
+/* checklist */
+.check{border:1px solid var(--rule);border-radius:4px;background:var(--surface);overflow:hidden}
+.check-item{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;border-bottom:1px solid var(--rule-2)}
+.check-item:last-child{border-bottom:0}
+.check-item input{margin:4px 0 0;width:16px;height:16px;accent-color:var(--blueprint);flex:none;cursor:pointer}
+.check-item label{font-family:var(--cond);font-size:14.5px;line-height:1.45;cursor:pointer;color:var(--ink)}
+.check-item label b{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-bottom:2px}
+.check-item.done label{color:var(--ink-3);text-decoration:line-through}
+.check-foot{padding:10px 16px;background:var(--surface-2);border-top:1px solid var(--rule);font-family:var(--mono);font-size:11px;color:var(--ink-3);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.check-foot button{font-family:var(--mono);font-size:10.5px;background:none;border:1px solid var(--rule);color:var(--ink-2);padding:3px 10px;border-radius:3px;cursor:pointer;letter-spacing:.05em}
+.check-foot button:hover{border-color:var(--blueprint);color:var(--blueprint)}
+
+/* refs */
+.refs{margin:14px 0 0;padding-left:30px;list-style:decimal;max-width:none}
+.refs li{display:list-item;padding:6px 0 6px 4px;border-bottom:1px solid var(--rule-2);margin:0;font-family:var(--cond);font-size:13.5px;line-height:1.4}
+.refs li::marker{font-family:var(--mono);font-size:11px;color:var(--signal);font-weight:600}
+.refs li a{overflow-wrap:anywhere;font-family:var(--mono);font-size:11px;display:inline-block;margin-top:2px;color:var(--ink-3);text-decoration:none}
+.refs li a:hover{color:var(--blueprint);text-decoration:underline}
+.refs .rt{color:var(--ink);font-weight:500}
+
+.colophon{margin-top:70px;padding-top:22px;border-top:3px solid var(--blueprint);font-family:var(--mono);font-size:11.5px;color:var(--ink-3);line-height:1.75}
+.kicker{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);margin:36px 0 0;display:block;font-weight:600}
+
+
+
+/* ================= motor de slides ================= */
+html{scroll-snap-type:y proximity;scroll-behavior:smooth}
+body{margin:0}
+.slide{height:100vh;min-height:100vh;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:flex-start;padding:26px clamp(64px,6vw,96px) 26px;font-size:15.5px;overflow:hidden;position:relative;border-bottom:1px solid var(--rule-2);background:var(--paper)}
+.slide.alt{background:var(--surface-2)}
+.slide .inner{max-width:none;width:100%;margin:0;max-height:calc(100vh - 52px);overflow:auto;scrollbar-width:thin}
+.slide.fit .inner{overflow:visible}
+.slide h2{max-width:none;font-size:clamp(24px,3.2vw,38px);margin-top:6px}
+.slide .lead{font-size:clamp(15.5px,1.35vw,18px);color:var(--ink-2);max-width:none;margin:10px 0 0;line-height:1.5}
+.slide p,.slide ul,.slide ol,.slide .rule-box,.slide .trap,.slide .case,.slide .note,.slide .more,.slide figcaption,.slide .check,.slide .refs,.slide h2{max-width:none}
+.two{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(16px,2.4vw,34px);align-items:start;margin-top:16px}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+.two figure,.two .tw,.two .code,.two .term{margin-top:0}
+.kicker-part{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--signal);font-weight:600}
+.kicker-part span{color:var(--ink-3);font-weight:400;margin-left:10px}
+.more{margin-top:16px;max-width:76ch;border:1px solid var(--rule);border-radius:4px;background:var(--surface)}
+.more summary{cursor:pointer;font-family:var(--cond);font-weight:600;font-size:14px;padding:10px 14px;color:var(--blueprint);list-style:none;display:flex;align-items:center;gap:8px}
+.more summary::before{content:"+";font-family:var(--mono);width:16px;display:inline-block;text-align:center}
+.more[open] summary::before{content:"–"}
+.more>div{padding:0 16px 14px;font-size:15.5px}
+.more>div p,.more>div li{max-width:none;font-size:15.5px}
+.more .tw{margin-top:10px}
+.bul{list-style:none;padding:0;margin:18px 0 0;display:flex;flex-direction:column;gap:9px}
+.bul li{position:relative;padding-left:24px;font-size:15.5px;line-height:1.5;margin:0}
+.bul li::before{content:"";position:absolute;left:4px;top:9px;width:10px;height:10px;border-radius:2px;background:var(--blueprint)}
+.bul li.warn::before{background:var(--signal)}
+.bul li.stop::before{background:var(--stop)}
+.bul li.go::before{background:var(--go)}
+
+/* capa */
+.slide.cover{justify-content:center;background:var(--paper)}
+.slide.divider{justify-content:center}
+.brand{font-family:var(--cond);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:13px;color:var(--blueprint);display:inline-flex;align-items:center;gap:10px}
+.brand::before{content:"";width:22px;height:2px;background:var(--signal)}
+.cover h1{font-family:var(--cond);font-weight:700;font-size:clamp(42px,7.2vw,88px);line-height:.98;letter-spacing:-.02em;margin:22px 0 0;text-wrap:balance;max-width:none}
+.cover .lede{font-size:clamp(18px,1.9vw,23px);color:var(--ink-2);max-width:none;margin:22px 0 0;line-height:1.55}
+.cover-meta{margin-top:34px;display:flex;flex-wrap:wrap;gap:24px 40px;font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.04em}
+.cover-meta b{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px;font-weight:600}
+.cover-meta span{font-family:var(--cond);font-size:15px;color:var(--ink);letter-spacing:0}
+.hint{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:8px}
+.hint::after{content:"↓";animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* separador de parte */
+.slide.divider{justify-content:center;background:var(--blueprint);color:#F1F4F7;border-bottom:0}
+.slide.divider .kicker-part{color:#F4B07A}
+.slide.divider .kicker-part span{color:rgba(241,244,247,.6)}
+.slide.divider h2{color:#FFFFFF;font-size:clamp(40px,6vw,74px);max-width:none}
+.slide.divider p{color:rgba(241,244,247,.82);font-size:clamp(17px,1.7vw,21px);max-width:none}
+.slide.divider .num{font-family:var(--mono);font-size:clamp(90px,16vw,200px);font-weight:600;color:rgba(255,255,255,.08);position:absolute;right:4vw;bottom:-2vw;line-height:1;letter-spacing:-.04em;pointer-events:none}
+
+/* barra fixa, progresso, navegação */
+.topbar{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(14px,3vw,28px);background:color-mix(in srgb,var(--paper) 86%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--rule);z-index:40}
+.topbar .brand{font-size:12px}
+.topbar .where{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.06em;display:flex;align-items:center;gap:12px}
+.topbar .where b{color:var(--ink);font-weight:600}
+.prog{position:fixed;top:0;left:0;height:3px;background:var(--signal);width:0;z-index:41;transition:width .25s ease}
+.navbtn{position:fixed;left:clamp(8px,1.2vw,18px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;z-index:40;align-items:center;opacity:.28;transition:opacity .25s ease}
+.navbtn:hover,.navbtn:focus-within{opacity:1}
+@media (hover:none){.navbtn{opacity:.85}}
+.navbtn .cnt{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em;margin-top:2px}
+.navbtn .cnt b{color:var(--ink)}
+.navbtn button,.menubtn{font-family:var(--mono);font-size:13px;width:42px;height:42px;border-radius:4px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);cursor:pointer;box-shadow:var(--shadow);display:inline-flex;align-items:center;justify-content:center}
+.navbtn button:hover,.menubtn:hover{border-color:var(--blueprint);color:var(--blueprint)}
+.menubtn{font-size:16px}
+.menu{position:fixed;inset:0 auto 0 0;width:min(360px,92vw);background:var(--surface);border-right:1px solid var(--rule);box-shadow:var(--shadow);z-index:45;overflow-y:auto;padding:14px 10px 40px;transform:translateX(-102%);transition:transform .28s ease}
+.menu.open{transform:none}
+.menu .grp{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);padding:14px 10px 4px;border-top:1px solid var(--rule-2);margin-top:6px}
+.menu .grp:first-child{border-top:0;margin-top:0}
+.menu a{display:flex;gap:10px;align-items:baseline;text-decoration:none;color:var(--ink-2);font-family:var(--cond);font-size:14px;padding:6px 10px;border-radius:3px;border-left:2px solid transparent}
+.menu a .n{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);min-width:20px;font-variant-numeric:tabular-nums}
+.menu a:hover{background:var(--blueprint-soft);color:var(--ink)}
+.menu a.on{border-left-color:var(--blueprint);color:var(--blueprint);background:var(--blueprint-soft);font-weight:600}
+.scrim{position:fixed;inset:0;background:rgba(16,23,32,.25);z-index:44;opacity:0;pointer-events:none;transition:opacity .25s}
+.scrim.on{opacity:1;pointer-events:auto}
+
+/* efeitos de entrada — estado de repouso legível; só deslocamento e leve fade */
+.rv{transform:translateY(16px);opacity:.55;transition:transform .55s cubic-bezier(.2,.7,.2,1),opacity .55s ease}
+.slide.in .rv{transform:none;opacity:1}
+.slide.in .rv:nth-child(2){transition-delay:.06s}.slide.in .rv:nth-child(3){transition-delay:.12s}.slide.in .rv:nth-child(4){transition-delay:.18s}.slide.in .rv:nth-child(5){transition-delay:.24s}.slide.in .rv:nth-child(6){transition-delay:.30s}
+.slide.cover .rv{transform:none;opacity:1}
+@media (prefers-reduced-motion:reduce){.rv{transform:none;opacity:1;transition:none}.hint::after{animation:none}.prog{transition:none}.menu{transition:none}}
+
+/* figuras leves */
+.shot{border:1px solid var(--rule);border-radius:5px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}
+.shot img{display:block;width:100%;height:auto}
+.sets{position:relative;height:250px;max-width:520px;margin:0 auto;font-family:var(--cond)}
+.sets div{position:absolute;border-radius:50%;border:1.5px solid var(--rule);display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;font-size:13px;color:var(--ink-2);text-align:center;line-height:1.3}
+.sets .s1{inset:0;background:var(--surface-2)}
+.sets .s2{inset:12% 15% 8% 15%;background:var(--amber-soft);border-color:var(--amber)}
+.sets .s3{inset:38% 32% 14% 32%;background:var(--signal-soft);border-color:var(--signal);align-items:center;padding:0;font-weight:600;color:var(--signal)}
+.dec{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:20px}
+.dec div{border:1px solid var(--rule);border-radius:4px;padding:12px 14px;background:var(--surface)}
+.dec b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;margin-bottom:6px}
+.dec .h{border-left:3px solid var(--stop)}.dec .h b{color:var(--stop)}
+.dec .p{border-left:3px solid var(--amber)}.dec .p b{color:var(--amber)}
+.dec .m{border-left:3px solid var(--go)}.dec .m b{color:var(--go)}
+.dec ul{margin:0;padding-left:16px;max-width:none}
+.dec li{font-family:var(--cond);font-size:14px;line-height:1.4;margin:4px 0}
+
+/* impressão: um slide por página */
+@page{size:A4 landscape;margin:12mm}
+@media print{
+  html{scroll-snap-type:none}
+  body{background:#fff;color:#101720}
+  .prog,.navbtn,.menubtn,.menu,.scrim,.hint{display:none!important}
+  .slide{min-height:0;height:auto;break-after:page;padding:8mm 4mm;border:0;justify-content:flex-start;overflow:visible}
+  .slide .inner{max-height:none;overflow:visible;zoom:1!important}
+  .slide.divider{background:#17436B!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rv{transform:none;opacity:1}
+  .more{display:block}.more>div{display:block}
+  .term{background:#0B1219!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rule-box,.trap,.case,.note,.pill,.bar-fill,.bar-track,.node,.dec div,.sets div{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .code pre,.term pre{white-space:pre-wrap;word-break:break-word}
+  a{color:inherit;text-decoration:none}
+}
+
+/* limites de altura: um slide por tela */
+.slide .tw{max-height:none;overflow:auto}
+.slide .tw table{font-size:13.5px}
+.slide .tw td,.slide .tw th{padding:8px 11px}
+.slide figure{margin-top:14px}
+.slide .shot img{max-height:34vh;width:auto;max-width:100%;margin:0 auto}
+.slide .code pre,.slide .term pre{max-height:none;overflow:auto;font-size:12px}
+.slide .rule-box,.slide .trap,.slide .case,.slide .note{margin-top:14px;padding:12px 16px}
+.slide .rule-box p,.slide .trap p,.slide .case p,.slide .note p{font-size:14.5px}
+.slide ol,.slide ul{margin-top:10px}
+.slide li{margin:5px 0;font-size:15px}
+.slide h4{margin-top:14px}
+.slide .check{max-height:none}
+.slide .refs{max-height:none}
+.slide .refs li{font-size:13px;padding:6px 0 6px 4px}
+.slide figcaption{font-size:12.5px;margin-top:8px}
+.slide .dec ul{padding-left:14px}.slide .dec li{font-size:13.5px}
+.slide .frame{padding:16px}
+.slide .sets{height:210px}
+@media (max-height:760px){.slide .shot img{max-height:30vh}}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}
+.three figure{margin:0}
+.three .shot img{max-height:none}
+@media (max-width:900px){.three{grid-template-columns:1fr}}
+.slide .node{padding:9px 11px;gap:4px}.slide .node .nt{font-size:14px}.slide .node .nd{font-size:12px}
+
+/* ================= celular e tablet ================= */
+@media (max-width:900px){
+  html{scroll-snap-type:none}
+  .slide{height:auto;min-height:0;overflow:visible;padding:26px 16px 30px;scroll-snap-align:none;font-size:15px}
+  .slide .inner{max-height:none;overflow:visible;zoom:1!important}
+  .slide.cover,.slide.divider{min-height:72vh;padding:40px 18px}
+  .cover h1{font-size:clamp(38px,11vw,60px)}
+  .cover .lede{font-size:17px}
+  .cover-meta{gap:14px 24px}
+  .hint{display:none}
+  .slide h2{font-size:clamp(23px,6.4vw,30px)}
+  .slide .lead{font-size:15.5px}
+  .kicker-part span{display:block;margin-left:0;margin-top:2px}
+  .two,.three{grid-template-columns:minmax(0,1fr);gap:14px}
+  .slide{max-width:100vw;overflow-x:hidden}
+  .slide .inner{min-width:0}
+  .two>*,.three>*{min-width:0}
+  .slide .tw{max-height:none}
+  .slide .tw table{min-width:560px;font-size:13px}
+  .slide .shot img{max-height:none}
+  .slide .code pre,.slide .term pre{max-height:none;font-size:11.5px}
+  .slide .refs,.slide .check{max-height:none}
+  .compare{grid-template-columns:minmax(0,1fr)}.compare>div:first-child{border-right:0;border-bottom:1px solid var(--rule)}
+  .dec{grid-template-columns:minmax(0,1fr)}
+  .flow{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+  .sets{height:200px}
+  .navbtn{left:auto;right:10px;top:auto;bottom:10px;transform:none;flex-direction:row;gap:6px;padding:6px;background:color-mix(in srgb,var(--surface) 92%,transparent);border:1px solid var(--rule);border-radius:6px;box-shadow:var(--shadow)}
+  .navbtn button,.menubtn{width:38px;height:38px;box-shadow:none}
+  .navbtn .cnt{margin:0 4px 0 2px}
+  .menu{width:100vw;inset:0 0 0 0}
+  .slide.divider .num{font-size:24vw;right:2vw;bottom:-3vw}
+  .rule-box,.trap,.case,.note{padding:12px 14px}
+}
+@media (max-width:480px){
+  .slide{padding:22px 12px 26px}
+  .plate div,.cover-meta div{width:100%}
+  .bar-row{grid-template-columns:minmax(64px,90px) minmax(0,1fr) 46px;gap:6px}
+  .ui-body{grid-template-columns:1fr}.ui-side{border-right:0;border-bottom:1px solid var(--rule)}
+}
+.gl4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:14px}
+.gl{column-count:1}
+.gl{margin:0;font-family:var(--cond);font-size:12.5px;line-height:1.38;columns:2;column-gap:18px}
+.gl dt{break-inside:avoid}.gl dd{break-inside:avoid}
+@media (max-width:640px){.gl{columns:1}}
+.gl dt{font-weight:600;color:var(--blueprint);margin-top:7px}
+.gl dd{margin:1px 0 0;color:var(--ink-2)}
+
+@media (max-width:640px){.gl4{grid-template-columns:minmax(0,1fr)}}
+.menu-head{display:flex;justify-content:space-between;align-items:center;padding:8px 10px 10px;border-bottom:1px solid var(--rule);margin-bottom:6px}
+.menu-head button{font-family:var(--mono);font-size:20px;line-height:1;width:34px;height:34px;border:1px solid var(--rule);border-radius:4px;background:var(--surface);color:var(--ink-2);cursor:pointer}
+.menu-head button:hover{border-color:var(--blueprint);color:var(--blueprint)}
+.modal{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:4vh 4vw;background:rgba(16,23,32,.45)}
+.modal.on{display:flex}
+.modal-box{background:var(--surface);color:var(--ink);border:1px solid var(--rule);border-radius:6px;box-shadow:var(--shadow);max-width:1100px;width:100%;max-height:92vh;display:flex;flex-direction:column}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--rule);font-family:var(--cond);font-weight:600;font-size:15px;color:var(--blueprint)}
+.modal-head button{font-family:var(--mono);font-size:20px;line-height:1;width:34px;height:34px;border:1px solid var(--rule);border-radius:4px;background:var(--surface);color:var(--ink-2);cursor:pointer}
+.modal-body{padding:14px 18px 20px;overflow:auto;font-size:15px}
+.modal-body p,.modal-body li{max-width:none;font-size:15px}
+.modal-body .tw{margin-top:10px}.modal-body .two{margin-top:8px}
+.modal-body .shot img{max-height:60vh;width:auto;max-width:100%}
+/* 4) botão de copiar */
+.code,.term{position:relative}
+.copy{position:absolute;top:6px;right:8px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;padding:3px 8px;border-radius:3px;border:1px solid var(--rule);background:var(--surface);color:var(--ink-2);cursor:pointer;opacity:.75;z-index:2}
+.copy:hover{opacity:1;border-color:var(--blueprint);color:var(--blueprint)}
+.term .copy{background:#141F2B;border-color:#2B3B4C;color:#9FB1C2}
+.copy.ok{color:var(--go);border-color:var(--go)}
+.gterm{text-decoration:underline dotted var(--blueprint-2);text-decoration-thickness:1.5px;text-underline-offset:3px;cursor:help}
+.gterm:hover,.gterm:focus{background:var(--blueprint-soft);outline:none;border-radius:2px}
+.gpop{position:fixed;z-index:70;max-width:340px;background:var(--surface);color:var(--ink);border:1px solid var(--rule);border-left:3px solid var(--blueprint);border-radius:4px;box-shadow:var(--shadow);padding:10px 12px;font-family:var(--cond);font-size:13.5px;line-height:1.45;display:none;pointer-events:none}
+.gpop.on{display:block}
+.gpop b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--blueprint);margin-bottom:4px}
+@media (hover:none){.gpop{pointer-events:auto}}
+.slide .check{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.slide .check .check-foot{grid-column:1/-1}
+.slide .check-item{border-right:1px solid var(--rule-2)}.slide .check-item:nth-child(even){border-right:0}
+.slide .refs{columns:2;column-gap:28px}.slide .refs li{break-inside:avoid}
+#s06 .tw td,#s06 .tw th{padding:6px 10px}
+@media (max-width:900px){.slide .check{grid-template-columns:minmax(0,1fr)}.slide .check-item{border-right:0}.slide .refs{columns:1}}
+
+/* extras deste manual */
+.gantt{display:grid;grid-template-columns:150px repeat(12,minmax(0,1fr));gap:4px 0;font-family:var(--cond);font-size:12.5px;align-items:center}
+.gantt .gl{padding-right:8px;color:var(--ink-2);text-align:right}
+.gantt .gm{font-family:var(--mono);font-size:10px;color:var(--ink-3);text-align:center;border-bottom:1px solid var(--rule);padding-bottom:3px}
+.gantt .gb{height:14px;border-radius:2px;background:var(--blueprint);margin:3px 1px}
+.gantt .gb.s{background:var(--signal)}.gantt .gb.g{background:var(--go)}.gantt .gb.a{background:var(--amber)}
+.cycle{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.cycle .node{align-items:center;text-align:center}
+.struct{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.struct>div{border:1px solid var(--rule);border-radius:4px;background:var(--surface);padding:10px 12px}
+.struct h5{margin:0 0 6px;font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--blueprint)}
+.struct ol,.struct ul{margin:0;padding-left:16px}.struct li{font-family:var(--cond);font-size:13px;line-height:1.35;margin:2px 0}
+@media (max-width:900px){.struct{grid-template-columns:minmax(0,1fr)}.gantt{grid-template-columns:110px repeat(12,minmax(0,1fr))}}
+</style>
+<div class="prog" id="prog"></div>
+<div class="scrim" id="scrim"></div>
+<div class="gpop" id="gpop" role="tooltip"></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true"><div class="modal-box"><div class="modal-head"><span id="modal-title">detalhes</span><button type="button" id="modal-close" aria-label="Fechar">×</button></div><div class="modal-body" id="modal-body"></div></div></div>
+<nav class="menu" id="menu" aria-label="Sumário"><div class="menu-head"><span class="brand">MirandasTech</span><button type="button" id="menuclose" aria-label="Fechar sumário">×</button></div><div id="menulist"></div></nav>
+<div class="navbtn"><button class="menubtn" id="menubtn" aria-label="Abrir sumário">☰</button><button id="prev" aria-label="Slide anterior">↑</button><button id="next" aria-label="Próximo slide">↓</button><span class="cnt"><b id="cur">1</b>/<span id="tot">–</span></span></div>
+
+
+<main id="deck">
+<!-- ===================== CAPA ===================== -->
+<section class="slide cover" id="s00" data-title="Capa">
+  <div class="inner">
+    <span class="brand rv">MirandasTech · Manual profissional</span>
+    <h1 class="rv">Gemini Notebook para pesquisa científica: passo a passo</h1>
+    <p class="lede rv">Criar o notebook, alimentar com as fontes, perguntar com citação, gerar no Estúdio, montar os fluxos de leitura e síntese, compartilhar e declarar — com o caderno de pesquisa do Google cuja inteligência artificial <strong>responde só a partir do que você enviou</strong>.</p>
+    <div class="cover-meta rv">
+      <div><b>Série</b><span>Manuais MirandasTech · ferramentas de pesquisa</span></div>
+      <div><b>Versão</b><span>1.0 · setembro de 2026</span></div>
+      <div><b>Formato</b><span><span id="nslides">–</span> slides</span></div>
+      <div><b>Licença</b><span>CC BY 4.0 — cite a fonte</span></div>
+    </div>
+  </div>
+  <div class="hint">role para começar</div>
+</section>
+
+<section class="slide" id="s01" data-title="Para quem é e o que você vai aprender">
+  <div class="inner">
+    <div class="kicker-part rv">Como usar<span>cada slide é um passo que você executa na tela</span></div>
+    <h2 class="rv">Para quem é — e o que você vai saber fazer ao final</h2>
+    <p class="lead rv">Este manual é para quem tem uma pilha de artigos para ler, comparar e sintetizar — trabalho de conclusão, dissertação, tese, revisão de literatura, preparação de aula ou de banca — e quer usar inteligência artificial <em>sem perder o rastro da fonte</em>. Não exige conhecimento prévio: começa no primeiro acesso e termina com os fluxos completos de pesquisa.</p>
+    <div class="two rv">
+      <div>
+        <h4>Ao final, você vai conseguir</h4>
+        <ul class="bul">
+          <li><strong>Criar</strong> notebooks e alimentá-los com PDFs, sites, vídeos, arquivos do Google Drive e texto copiado.</li>
+          <li><strong>Perguntar</strong> e receber respostas com <span class="gterm" tabindex="0" data-t="Citação numerada" data-d="Número entre colchetes na resposta que leva ao trecho exato da fonte de onde a afirmação saiu.">citação numerada</span> — e conferir o trecho exato na fonte.</li>
+          <li><strong>Gerar</strong> no <span class="gterm" tabindex="0" data-t="Estúdio" data-d="Painel direito do notebook: gera Resumo em Áudio, Resumo em Vídeo, Mapa mental, Relatórios, Cartões didáticos, Teste, Infográfico, Apresentação de slides e Tabela de dados a partir das fontes selecionadas.">Estúdio</span> resumos em áudio e vídeo, mapas mentais, relatórios, cartões, testes e tabelas de dados.</li>
+          <li><strong>Montar</strong> os fluxos que a pesquisa pede: triagem de PDFs, leitura profunda, <span class="gterm" tabindex="0" data-t="Matriz de síntese" data-d="Tabela em que cada linha é um estudo e cada coluna uma pergunta da revisão (objetivo, método, amostra, resultado, limitação).">matriz de síntese</span>, aula, banca.</li>
+          <li><strong>Compartilhar</strong> com orientador e coautores, respeitar privacidade e <span class="gterm" tabindex="0" data-t="Direitos autorais" data-d="O PDF de um artigo de editora ou de um capítulo de livro é licenciado para o seu uso pessoal (pela assinatura da instituição ou pela compra); enviá-lo a um serviço para leitura própria é uso pessoal; redistribuí-lo por um notebook compartilhado ou público não é.">direitos autorais</span> e <strong>declarar</strong> o uso no trabalho.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="rule-box"><span class="blabel">Regra</span><p>Todo passo aparece com o nome exato do botão e uma captura da interface em português, feita em <span class="gterm" tabindex="0" data-t="Conta pessoal" data-d="Conta Google individual (gmail.com ou domínio próprio sem Workspace); tem acesso a notebooks públicos e Notebooks em destaque, e política de privacidade própria.">conta pessoal</span> em setembro de 2026. Limites e nomes «estão sujeitos a mudança», nas palavras da própria ajuda: quando divergirem da sua tela, vale a tela.</p></div>
+        <div class="trap"><span class="blabel">Armadilha</span><p>O que a regra evita: tratar a resposta como leitura feita. O <span class="gterm" tabindex="0" data-t="Gemini Notebook" data-d="Serviço do Google para conversar com um conjunto de fontes escolhidas pelo usuário; antes chamado NotebookLM, renomeado em 16/07/2026.">Gemini Notebook</span> encurta o caminho até o trecho certo; a leitura do trecho continua sendo sua.</p></div>
+        <div class="note"><span class="blabel">Manuais irmãos</span><p>Este manual cuida da <em>ferramenta</em>. O que decidir em cada etapa da pesquisa está em <a href="https://metodologia.mirandastech.com.br/">Metodologia da pesquisa científica</a>; o que delegar à inteligência artificial e como declarar, em <a href="https://manual.mirandastech.com.br/">Uso de IA na pesquisa científica</a>; onde guardar as referências e os PDFs, em <a href="https://manual.mirandastech.com.br/zotero/">Zotero para pesquisa científica</a>. Termos sublinhados abrem a definição do glossário.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide alt" id="s02" data-title="Por que um caderno de pesquisa com IA fundamentada nas fontes">
+  <div class="inner">
+    <div class="kicker-part rv">Introdução<span>1 de 3</span></div>
+    <h2 class="rv">Por que um caderno de pesquisa com IA fundamentada nas fontes</h2>
+    <p class="lead rv">Perguntar a um chat aberto «o que a literatura diz sobre X» produz um texto fluente que pode citar artigos inexistentes. O <span class="gterm" tabindex="0" data-t="Gemini Notebook" data-d="Serviço do Google para conversar com um conjunto de fontes escolhidas pelo usuário; antes chamado NotebookLM, renomeado em 16/07/2026.">Gemini Notebook</span> inverte a lógica: você entrega as fontes primeiro e ele responde <em>a partir delas</em>, apontando o trecho. É a diferença entre um assistente que opina e um que lê o que você mandou.</p>
+    <div class="compare rv">
+      <div><div class="cmp-h" style="color:var(--stop)">Chat aberto (Gemini, ChatGPT e similares, sem fontes)</div><ul>
+        <li>Responde do que aprendeu no treinamento, mais uma eventual busca na web.</li>
+        <li>Pode inventar autores, anos e DOIs — a <span class="gterm" tabindex="0" data-t="Alucinação" data-d="Resposta fluente e plausível que não corresponde a nenhuma fonte real — inclusive referências inexistentes.">alucinação</span> típica.</li>
+        <li>Não diz de onde tirou cada afirmação.</li>
+        <li>Você não controla o corpus: ele é o mundo inteiro, ou nada.</li>
+        <li>O contexto se perde entre conversas.</li>
+      </ul></div>
+      <div><div class="cmp-h" style="color:var(--go)">Gemini Notebook</div><ul>
+        <li>Responde a partir das fontes que você enviou (<span class="gterm" tabindex="0" data-t="RAG" data-d="Retrieval-Augmented Generation, geração aumentada por recuperação: o modelo recebe, junto com a pergunta, os trechos relevantes das suas fontes e responde a partir deles.">RAG</span>).</li>
+        <li>Cada afirmação traz um número que leva ao trecho da fonte.</li>
+        <li>Quando o assunto não está nas fontes, ele diz que não está.</li>
+        <li>O corpus é seu: um <span class="gterm" tabindex="0" data-t="Notebook" data-d="A unidade de trabalho: um conjunto de fontes, a conversa sobre elas, as notas e o que o Estúdio gerou. Um por projeto ou pergunta de pesquisa.">notebook</span> por projeto, com até 50 fontes no plano grátis.</li>
+        <li>Notas, <span class="gterm" tabindex="0" data-t="Estúdio" data-d="Painel direito do notebook: gera Resumo em Áudio, Resumo em Vídeo, Mapa mental, Relatórios, Cartões didáticos, Teste, Infográfico, Apresentação de slides e Tabela de dados a partir das fontes selecionadas.">Estúdio</span> e histórico ficam no <span class="gterm" tabindex="0" data-t="Notebook" data-d="A unidade de trabalho: um conjunto de fontes, a conversa sobre elas, as notas e o que o Estúdio gerou. Um por projeto ou pergunta de pesquisa.">notebook</span>.</li>
+      </ul></div>
+    </div>
+    <div class="rule-box rv"><span class="blabel">Regra</span><p><strong>Fundamentado não é infalível.</strong> O rodapé de cada notebook avisa: «O Gemini Notebook pode gerar respostas incorretas. Por isso, cheque o conteúdo.» A <span class="gterm" tabindex="0" data-t="Citação numerada" data-d="Número entre colchetes na resposta que leva ao trecho exato da fonte de onde a afirmação saiu.">citação numerada</span> existe para que a checagem custe um clique — e é por isso que este manual insiste nela em todos os fluxos.</p></div>
+  </div>
+</section>
+
+<section class="slide" id="s03" data-title="O que é o Gemini Notebook">
+  <div class="inner">
+    <div class="kicker-part rv">Introdução<span>2 de 3 · verificado em 08/09/2026</span></div>
+    <h2 class="rv">O que é o Gemini Notebook</h2>
+    <p class="lead rv">Serviço do Google lançado como <strong>NotebookLM</strong> e renomeado <strong>Gemini Notebook</strong> em 16 de julho de 2026. Funciona no navegador, em notebook.google.com, com qualquer conta Google. É gratuito; os planos Google AI Plus, Pro e Ultra ampliam os limites de uso.</p>
+    <div class="two rv">
+      <div class="tw"><table><thead><tr><th style="width:150px">Fato</th><th>Estado atual</th></tr></thead><tbody>
+        <tr><td><b>Nome</b></td><td>Gemini Notebook (antes NotebookLM); os endereços antigos redirecionam</td></tr>
+        <tr><td><b>Onde</b></td><td>notebook.google.com · ajuda em support.google.com/gemininotebook</td></tr>
+        <tr><td><b>Custo</b></td><td>Gratuito com conta Google; Plus, Pro e Ultra ampliam limites (tabela ao lado)</td></tr>
+        <tr><td><b>Celular e tablet</b></td><td>Aplicativos para Android 10 ou superior e iOS 17 ou superior; o app não cria notas</td></tr>
+        <tr><td><b>Navegador</b></td><td>Não há extensão oficial; as da Chrome Web Store são de terceiros</td></tr>
+        <tr><td><b>Idade e região</b></td><td>13 anos ou mais (ou o mínimo do país) desde 04/08/2025; Brasil e português do Brasil disponíveis</td></tr>
+        <tr><td><b>Modelo</b></td><td>Gemini 3.5. Desde 08/06/2026, o recurso <span class="gterm" tabindex="0" data-t="Antigravity" data-d="Recurso anunciado em 08/06/2026: um computador em nuvem que executa código dentro do notebook e gera PDF, XLSX, PPTX, PNG, SVG, MD, JSON e CSV. Primeiro para Ultra e Workspace Expanded Access.">Antigravity</span> executa código e gera arquivos (PDF, XLSX, PPTX, PNG, SVG, MD, JSON, CSV) — primeiro para Ultra e <span class="gterm" tabindex="0" data-t="Workspace · Education" data-d="Contas Google administradas por uma organização ou instituição de ensino; no Gemini Notebook, o conteúdo nunca é revisado por humanos nem usado para treinar modelos, mesmo com feedback.">Workspace</span> Expanded Access; para AI Pro «nas próximas semanas» (anúncio de 16/07)</td></tr>
+      </tbody></table></div>
+      <div>
+        <div class="tw"><table><thead><tr><th>Limite</th><th class="num">Grátis</th><th class="num">AI Plus</th><th class="num">AI Pro</th></tr></thead><tbody>
+          <tr><td>Notebooks</td><td class="num">100</td><td class="num">200</td><td class="num">500</td></tr>
+          <tr><td>Fontes por notebook</td><td class="num">50</td><td class="num">100</td><td class="num">300</td></tr>
+          <tr><td>Conversas por dia</td><td class="num">50</td><td class="num">200</td><td class="num">500</td></tr>
+          <tr><td>Resumos em Áudio por dia</td><td class="num">3</td><td class="num">6</td><td class="num">20</td></tr>
+          <tr><td>Resumos em Vídeo por dia</td><td class="num">3</td><td class="num">6</td><td class="num">20 (+2 cinematográficos)</td></tr>
+          <tr><td>Relatórios, cartões, testes, mapas mentais por dia</td><td class="num">10</td><td class="num">20</td><td class="num">100</td></tr>
+          <tr><td><span class="gterm" tabindex="0" data-t="Deep Research" data-d="Modo do Descobrir fontes que percorre centenas de sites, monta um relatório com as fontes encontradas e permite adicioná-las ao notebook. Indisponível para menores de 18.">Deep Research</span></td><td class="num">10/mês</td><td class="num">3/dia</td><td class="num">20/dia</td></tr>
+        </tbody></table></div>
+        <div class="note"><span class="blabel">Sobre os números</span><p>Valores da página de limites da ajuda oficial, que os declara «sujeitos a mudança». Por fonte: até 500 mil palavras ou 200 MB. Contas Google <span class="gterm" tabindex="0" data-t="Workspace · Education" data-d="Contas Google administradas por uma organização ou instituição de ensino; no Gemini Notebook, o conteúdo nunca é revisado por humanos nem usado para treinar modelos, mesmo com feedback.">Workspace</span> e <span class="gterm" tabindex="0" data-t="Workspace · Education" data-d="Contas Google administradas por uma organização ou instituição de ensino; no Gemini Notebook, o conteúdo nunca é revisado por humanos nem usado para treinar modelos, mesmo com feedback.">Education</span> têm limites próprios (Standard iguais ao grátis; AI Expanded Access: 500 notebooks, 400 fontes, 1.000 conversas por dia). Outra página da ajuda descreve uma cota que se renova a cada 5 horas até um teto semanal — regime não confirmado na interface em setembro de 2026.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide alt" id="s03b" data-title="Roteiro">
+  <div class="inner">
+    <div class="kicker-part rv">Introdução<span>3 de 3</span></div>
+    <h2 class="rv">Roteiro: oito partes, na ordem em que você vai usá-las</h2>
+    <div class="flow rv">
+      <div class="node"><span class="nn">Parte 1</span><span class="nt">Começar</span><span class="nd">Acesso, página inicial, criar o notebook, os três painéis, Configurações</span></div>
+      <div class="node"><span class="nn">Parte 2</span><span class="nt">Fontes</span><span class="nd">O que aceita, Adicionar fontes, sites e <span class="gterm" tabindex="0" data-t="Paywall" data-d="Barreira de assinatura de uma editora: a página mostra só o resumo; o texto completo exige login ou pagamento.">paywall</span>, Descobrir, Drive, seleção e rótulos</span></div>
+      <div class="node"><span class="nn">Parte 3</span><span class="nt">Conversar</span><span class="nd">Perguntas boas, citações clicáveis, Salvar como nota, Opções de conversa</span></div>
+      <div class="node"><span class="nn">Parte 4</span><span class="nt">Estúdio</span><span class="nd">Áudio, vídeo, mapa mental, relatórios, cartões, teste, infográfico, slides, tabela</span></div>
+      <div class="node"><span class="nn">Parte 5</span><span class="nt">Fluxos</span><span class="nd">Triagem, leitura profunda, <span class="gterm" tabindex="0" data-t="Matriz de síntese" data-d="Tabela em que cada linha é um estudo e cada coluna uma pergunta da revisão (objetivo, método, amostra, resultado, limitação).">matriz de síntese</span>, aula, banca, Zotero e agentes</span></div>
+      <div class="node"><span class="nn">Parte 6</span><span class="nt">Colaborar</span><span class="nd"><span class="gterm" tabindex="0" data-t="Leitor · Editor" data-d="Papéis de compartilhamento: o Leitor conversa com as fontes e vê as notas; o Editor também adiciona e remove fontes, notas e materiais do Estúdio.">Leitor</span> e <span class="gterm" tabindex="0" data-t="Leitor · Editor" data-d="Papéis de compartilhamento: o Leitor conversa com as fontes e vê as notas; o Editor também adiciona e remove fontes, notas e materiais do Estúdio.">Editor</span>, link público, <span class="gterm" tabindex="0" data-t="Notebooks no Gemini" data-d="Desde 08/04/2026, os notebooks aparecem dentro do aplicativo Gemini, sincronizados nos dois sentidos; o Estúdio não está disponível ali.">Notebooks no Gemini</span>, aplicativo</span></div>
+      <div class="node"><span class="nn">Parte 7</span><span class="nt">Limites e ética</span><span class="nd">O que ele não faz, privacidade, dados sensíveis, declarar o uso, <span class="gterm" tabindex="0" data-t="Direitos autorais" data-d="O PDF de um artigo de editora ou de um capítulo de livro é licenciado para o seu uso pessoal (pela assinatura da instituição ou pela compra); enviá-lo a um serviço para leitura própria é uso pessoal; redistribuí-lo por um notebook compartilhado ou público não é.">direitos autorais</span></span></div>
+      <div class="node"><span class="nn">Parte 8</span><span class="nt">Fechamento</span><span class="nd">Erros comuns, checklist, glossário, referências, repositório, os manuais juntos</span></div>
+    </div>
+    <div class="two rv">
+      <div class="rule-box"><span class="blabel">Como ler</span><p>Se você nunca abriu o Gemini Notebook, siga na ordem. Se já usa, vá direto à Parte 5 (fluxos) e volte às Partes 2 e 3 quando um passo não estiver claro. A Parte 7 é obrigatória antes de enviar qualquer dado de pesquisa com pessoas.</p></div>
+      <div class="note"><span class="blabel">Convenções</span><p>Nomes de botões entre «aspas angulares», como aparecem na interface em português. Blocos «<span class="gterm" tabindex="0" data-t="Prompt" data-d="O texto que você escreve na caixa de pergunta; quanto mais explícito sobre formato, escopo e o que fazer quando a informação não existe, melhor a resposta.">prompt</span>» têm botão «copiar»: cole na caixa «Faça uma pergunta ou crie algo». Capturas em 1920 × 1080, <span class="gterm" tabindex="0" data-t="Conta pessoal" data-d="Conta Google individual (gmail.com ou domínio próprio sem Workspace); tem acesso a notebooks públicos e Notebooks em destaque, e política de privacidade própria.">conta pessoal</span>, plano AI Plus.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PARTE 1 ===================== -->
+<section class="slide divider" id="p1" data-title="Parte 1 · Começar"><div class="inner"><div class="kicker-part rv">Parte 1<span>Começar</span></div><h2 class="rv">Conta, página inicial e o primeiro notebook</h2><p class="rv">Entrar, reconhecer a página inicial, criar e nomear um notebook, entender os três painéis e ajustar as Configurações.</p></div><div class="num">01</div></section>
+
+<section class="slide" id="s04" data-title="Acessar e a página inicial">
+  <div class="inner">
+    <div class="kicker-part rv">Começar<span>1 de 3</span></div>
+    <h2 class="rv">Acessar notebook.google.com e reconhecer a página inicial</h2>
+    <div class="two rv">
+      <figure><div class="shot"><img src="capturas/gn_01_inicio.jpg" width="1920" height="938" alt="Página inicial do Gemini Notebook com as abas Todos, Meus notebooks, Descobrir e Coleções, Notebooks em destaque e o botão Criar novo"></div><figcaption><b>Figura 1</b> Página inicial: abas «Todos · Meus notebooks · Descobrir · Coleções», a faixa «Notebooks em destaque», a lista «Notebooks recentes» e o botão «Criar novo».</figcaption></figure>
+      <div>
+        <ol>
+          <li>Abra <a href="https://notebook.google.com/">notebook.google.com</a> (o endereço notebook.google leva ao mesmo lugar).</li>
+          <li>Entre com a conta Google: pessoal, ou a conta Workspace/<span class="gterm" tabindex="0" data-t="Workspace · Education" data-d="Contas Google administradas por uma organização ou instituição de ensino; no Gemini Notebook, o conteúdo nunca é revisado por humanos nem usado para treinar modelos, mesmo com feedback.">Education</span> da instituição, se ela liberou o serviço.</li>
+          <li>Reconheça as áreas da página inicial, na tabela.</li>
+          <li>Clique em «Criar novo» — o próximo slide continua daqui.</li>
+        </ol>
+        <div class="tw"><table><thead><tr><th style="width:170px">Área</th><th>O que é</th></tr></thead><tbody>
+          <tr><td><b>Todos · Meus notebooks</b></td><td>Todos os notebooks que você vê; só os que você criou</td></tr>
+          <tr><td><b>Descobrir</b></td><td>Notebooks públicos de outras pessoas, para explorar um tema</td></tr>
+          <tr><td><b><span class="gterm" tabindex="0" data-t="Coleções" data-d="Aba da página inicial que agrupa notebooks — um agrupamento por projeto ou disciplina.">Coleções</span></b></td><td>Agrupamentos de notebooks — um por projeto ou disciplina</td></tr>
+          <tr><td><b>Notebooks em destaque</b></td><td>Curadoria do Google; aparece só em contas pessoais</td></tr>
+        </tbody></table></div>
+        <div class="note"><span class="blabel">Conta pessoal ou institucional?</span><p>A escolha muda a privacidade (Parte 7): em Workspace/Education, o conteúdo nunca é revisado por humanos nem usado para treinar, mesmo com <span class="gterm" tabindex="0" data-t="Feedback" data-d="Polegar para cima ou para baixo e «reportar» numa resposta; em conta pessoal, é o único caminho pelo qual o conteúdo pode passar por revisão humana (retenção de até 3 anos).">feedback</span>. Já notebooks públicos e «Notebooks em destaque» só existem em contas pessoais.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide alt" id="s05" data-title="Criar o notebook e os três painéis">
+  <div class="inner">
+    <div class="kicker-part rv">Começar<span>2 de 3</span></div>
+    <h2 class="rv">Criar o notebook, dar nome e entender os três painéis</h2>
+    <div class="two rv">
+      <figure><div class="shot"><img src="capturas/gn_02_novo_notebook.jpg" width="1920" height="938" alt="Notebook recém-criado, vazio, com os painéis Fontes, Conversa e Estúdio"></div><figcaption><b>Figura 2</b> Um notebook vazio: «Fontes» à esquerda, «Conversa» ao centro, «Estúdio» à direita. Na barra superior: «Criar notebook», «Copiar», «Análise de dados», «Compartilhar» e «Configurações».</figcaption></figure>
+      <div>
+        <ol>
+          <li>«Criar novo» abre um notebook vazio, com três atalhos («Aprender sobre um novo tema», «Criar algo novo», «Progredir em um projeto»). Ignore-os por enquanto: o caminho é «Adicionar fontes» (Parte 2).</li>
+          <li>Clique no título para renomear. Convenção sugerida: <code>Projeto · tema · ano</code> — por exemplo, <code>Dissertação · manutenção preditiva · 2026</code>.</li>
+          <li>Reconheça os três painéis, na tabela.</li>
+        </ol>
+        <div class="tw"><table><thead><tr><th style="width:110px">Painel</th><th>O que mostra</th><th>O que você faz nele</th></tr></thead><tbody>
+          <tr><td><b>Fontes</b></td><td>Lista das fontes, com caixas de seleção; «Adicionar fontes»; caixa «Pesquise novas fontes na web»; «Rotular suas fontes automaticamente por tema»; «Ordenar fontes»</td><td>Adiciona, seleciona quais entram na resposta, abre o guia de cada fonte</td></tr>
+          <tr><td><b>Conversa</b></td><td>Resumo do notebook, perguntas sugeridas, caixa «Faça uma pergunta ou crie algo», «Opções de conversa», «Personalizar notebook»</td><td>Pergunta, confere citações, «Salvar como nota»</td></tr>
+          <tr><td><b>Estúdio</b></td><td><span class="gterm" tabindex="0" data-t="Resumo em Áudio" data-d="Conversa gerada entre duas vozes sobre as fontes; formatos Deep Dive, Brief, Critique e Debate; modo interativo «Participar»; 80 idiomas ou mais.">Resumo em Áudio</span>, Apresentação de slides, <span class="gterm" tabindex="0" data-t="Resumo em Vídeo" data-d="Vídeo narrado gerado a partir das fontes; formatos Explicativo, Curto e Cinematográfico (só em inglês).">Resumo em Vídeo</span>, Mapa mental, Relatórios, Cartões didáticos, Teste, Infográfico, <span class="gterm" tabindex="0" data-t="Tabela de dados" data-d="Formato do Estúdio que extrai das fontes uma tabela estruturada — uma linha por fonte ou por item — exportável para o Google Sheets.">Tabela de dados</span>; «Adicionar nota»</td><td>Gera materiais e guarda notas</td></tr>
+        </tbody></table></div>
+        <div class="rule-box"><span class="blabel">Regra</span><p><strong>Um notebook por pergunta de pesquisa</strong> (ou por capítulo), não um notebook com tudo. Respostas ficam mais precisas quando as fontes são poucas e afins; e o limite de fontes por notebook obriga a escolher.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s06" data-title="Configurações, idioma e Meus notebooks">
+  <div class="inner">
+    <div class="kicker-part rv">Começar<span>3 de 3</span></div>
+    <h2 class="rv">Configurações, idioma das respostas e a lista «Meus notebooks»</h2>
+    <div class="three rv">
+      <figure><div class="shot"><img src="capturas/gn_20_configuracoes.jpg" width="1920" height="938" alt="Painel de Configurações do Gemini Notebook"></div><figcaption><b>Figura 3</b> «Configurações», na barra superior: Ajuda, Enviar feedback, Discord, «Idioma da resposta», Notificações, Licenças, Dispositivo e Gerenciar assinatura.</figcaption></figure>
+      <figure><div class="shot"><img src="capturas/gn_20b_idioma_resposta.jpg" width="1920" height="938" alt="Diálogo Definir as configurações com o idioma de substituição"></div><figcaption><b>Figura 4</b> «Idioma da resposta» → «Definir as configurações»: «Escolha o idioma de substituição» (aqui, português (Brasil)).</figcaption></figure>
+      <figure><div class="shot"><img src="capturas/gn_21_meus_notebooks.jpg" width="1920" height="938" alt="Aba Meus notebooks com a lista de notebooks criados"></div><figcaption><b>Figura 5</b> «Meus notebooks»: cada cartão dá acesso a renomear, excluir e organizar em Coleções.</figcaption></figure>
+      <div>
+        <ul class="bul">
+          <li>O idioma da interface segue o da conta Google. Se as respostas e os materiais do Estúdio saírem em outro idioma, defina «Configurações» → «Idioma da resposta» («Escolha o idioma de substituição») ou peça explicitamente no <span class="gterm" tabindex="0" data-t="Prompt" data-d="O texto que você escreve na caixa de pergunta; quanto mais explícito sobre formato, escopo e o que fazer quando a informação não existe, melhor a resposta.">prompt</span>: «Responda em português do Brasil».</li>
+          <li>Resumos em Áudio têm o próprio seletor de idioma no momento da geração (80 idiomas ou mais, inclusive português do Brasil); Resumos em Vídeo no formato «Cinematográfico» só saem em inglês.</li>
+          <li>«Copiar», na barra superior, duplica o notebook — útil para testar um conjunto diferente de fontes sem perder o original.</li>
+          <li class="warn">Excluir um notebook apaga fontes, conversa, notas e materiais gerados: exporte as notas para o Google Docs antes (Parte 4).</li>
+        </ul>
+        <div class="note"><span class="blabel">Contas Workspace e Education</span><p>Nessas contas, o administrador pode ter desativado o serviço ou limitado o compartilhamento. Se «Criar novo» não aparece, a causa é a política da instituição, não a sua conta.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PARTE 2 ===================== -->
+<section class="slide divider" id="p2" data-title="Parte 2 · Fontes"><div class="inner"><div class="kicker-part rv">Parte 2<span>Fontes</span></div><h2 class="rv">Tudo que entra no notebook</h2><p class="rv">O que ele aceita e em que limite, os cinco caminhos do diálogo «Adicionar fontes», o que fazer quando a URL da editora falha, Descobrir fontes, Drive, seleção e rótulos.</p></div><div class="num">02</div></section>
+
+<section class="slide" id="s07" data-title="O que ele aceita como fonte">
+  <div class="inner">
+    <div class="kicker-part rv">Fontes<span>1 de 7 · verificado em 08/09/2026</span></div>
+    <h2 class="rv">O que ele aceita como fonte — e em que limite</h2>
+    <p class="lead rv">Cada fonte pode ter até <strong>500 mil palavras ou 200 MB</strong>. O notebook aceita até 50 fontes no plano grátis (100 no Plus, 300 no Pro). O que a fonte «é» para o modelo é sempre <em>texto</em>: de um vídeo entra a transcrição, de uma imagem o que ele consegue ler, de um site o texto da página.</p>
+    <div class="tw rv"><table><thead><tr><th style="width:190px">Tipo</th><th>Formatos</th><th>Caminho no diálogo</th><th>O que entra de fato</th></tr></thead><tbody>
+      <tr><td><b>Documentos</b></td><td>PDF, TXT, Markdown, DOCX, PPTX, CSV, EPUB</td><td>«Enviar arquivos» (ou arrastar)</td><td>O texto; um PDF escaneado sem camada de texto entra vazio</td></tr>
+      <tr><td><b>Imagens</b></td><td>avif, bmp, gif, heic, heif, ico, jp2, jpeg, png, tiff, webp</td><td>«Enviar arquivos»</td><td>O que o modelo lê na imagem (figuras, tabelas fotografadas, quadros)</td></tr>
+      <tr><td><b>Áudio</b></td><td>MP3, WAV e outros</td><td>«Enviar arquivos»</td><td>A transcrição — serve para entrevistas e aulas gravadas</td></tr>
+      <tr><td><b>Texto colado</b></td><td>Qualquer texto</td><td>«Texto copiado»</td><td>O texto, como uma fonte nomeada</td></tr>
+      <tr><td><b>Google Drive</b></td><td>Google Docs, Slides (até 100 slides), Sheets (até 100 mil tokens)</td><td>«Drive»</td><td>O conteúdo, com sincronização automática desde 26/05/2026</td></tr>
+      <tr><td><b>Sites</b></td><td>URL pública</td><td>«Sites»</td><td>Só o texto da página; artigos atrás de <span class="gterm" tabindex="0" data-t="Paywall" data-d="Barreira de assinatura de uma editora: a página mostra só o resumo; o texto completo exige login ou pagamento.">paywall</span> não são aceitos</td></tr>
+      <tr><td><b>YouTube</b></td><td>URL de vídeo público</td><td>«Sites»</td><td>Só a transcrição (legendas); vídeos privados ou sem legenda não entram</td></tr>
+      <tr><td><b>Livros</b></td><td>Livros da sua biblioteca do Google Play</td><td>«Play Livros»</td><td>O texto do livro</td></tr>
+      <tr><td><b>Conversas do Gemini</b></td><td>Chats salvos no Gemini</td><td><span class="gterm" tabindex="0" data-t="Notebooks no Gemini" data-d="Desde 08/04/2026, os notebooks aparecem dentro do aplicativo Gemini, sincronizados nos dois sentidos; o Estúdio não está disponível ali.">Notebooks no Gemini</span> (Parte 6)</td><td>O texto da conversa</td></tr>
+    </tbody></table></div>
+    <div class="trap rv"><span class="blabel">Armadilha</span><p><strong>Um arquivo que «entra» não é um arquivo que foi lido.</strong> PDFs escaneados, capítulos com proteção contra cópia e vídeos sem legenda aparecem na lista, mas a pergunta «o que esta fonte diz?» volta vazia. Sempre abra o guia da fonte (slide 17) depois de adicionar.</p></div>
+  </div>
+</section>
+
+<section class="slide alt" id="s08" data-title="Adicionar fontes: o diálogo">
+  <div class="inner">
+    <div class="kicker-part rv">Fontes<span>2 de 7</span></div>
+    <h2 class="rv">«Adicionar fontes»: cinco caminhos num só diálogo</h2>
+    <div class="two rv">
+      <figure><div class="shot"><img src="capturas/gn_03_adicionar_fontes.jpg" width="1920" height="938" alt="Diálogo Adicionar fontes com a caixa de pesquisa na web, a área para soltar arquivos e os botões Enviar arquivos, Sites, Drive, Play Livros e Texto copiado"></div><figcaption><b>Figura 6</b> O diálogo: no alto, a pesquisa na web; ao centro, «ou solte seus arquivos (pdf, imagens, documentos, áudio e outros)»; embaixo, «Enviar arquivos · Sites · Drive · Play Livros · Texto copiado» e o contador de fontes (aqui, «n / 100», por ser plano Plus).</figcaption></figure>
+      <div>
+        <ol>
+          <li>No painel «Fontes», clique em «Adicionar fontes».</li>
+          <li>Escolha o caminho: arraste arquivos para a área central ou use um dos cinco botões.</li>
+          <li>Selecione vários arquivos de uma vez; cada um vira uma fonte com o nome do arquivo.</li>
+          <li>Aguarde o processamento: a fonte só está pronta quando aparece com a caixa de seleção marcada e o resumo do notebook é atualizado.</li>
+          <li>Observe o contador: ele mostra quantas fontes o plano ainda permite.</li>
+        </ol>
+        <div class="rule-box"><span class="blabel">Regra</span><p><strong>Nomeie os arquivos antes de enviar.</strong> O nome do arquivo vira o nome da fonte e é o que a citação mostra. Quem usa o Zotero com renomeação automática já tem isso resolvido: os PDFs saem como «Autor - Ano - Título.pdf».</p></div>
+        <div class="note"><span class="blabel">A caixa de pesquisa no alto do diálogo</span><p>É o «Descobrir fontes» (slide 15): a pesquisa na web traz páginas para você aprovar antes de adicionar. Não confunda com a pergunta ao notebook — esta se faz no painel «Conversa».</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s09" data-title="Sites, YouTube e as URLs de editoras que falham">
+  <div class="inner">
+    <div class="kicker-part rv">Fontes<span>3 de 7 · observado em 08/09/2026</span></div>
+    <h2 class="rv">Sites e YouTube — e por que a URL da editora costuma falhar</h2>
+    <div class="two rv">
+      <figure><div class="shot"><img src="capturas/gn_04_sites_urls.jpg" width="1920" height="938" alt="Caixa Sites do diálogo Adicionar fontes com URLs de páginas e de vídeos do YouTube coladas"></div><figcaption><b>Figura 7</b> «Sites»: cole as URLs — páginas e vídeos do YouTube na mesma caixa. Entra só o texto da página ou a transcrição do vídeo público.</figcaption></figure>
+      <figure><div class="shot"><img src="capturas/gn_05_fontes_erro_paywall.jpg" width="1920" height="938" alt="Lista de fontes com URLs de editoras marcadas com erro e o link Informações do erro"></div><figcaption><b>Figura 8</b> URLs de bmj.com, nature.com e biomedcentral.com falharam («Informações do erro»); a página aberta da PLOS foi importada. A editora mostra ao serviço só o resumo — ou nada.</figcaption></figure>
+    </div>
+    <div class="two rv">
+      <ul class="bul">
+        <li>Funciona bem: páginas abertas (PLOS, SciELO, repositórios institucionais, preprints), documentação, notícias, vídeos com legenda.</li>
+        <li class="warn">Falha ou entra incompleto: artigos atrás de paywall, páginas que exigem login, PDFs servidos por link dinâmico, vídeos privados ou sem legenda.</li>
+        <li class="warn">Mesmo quando a URL de uma editora «entra», confira no guia da fonte se veio o artigo inteiro ou só o resumo.</li>
+      </ul>
+      <div class="rule-box"><span class="blabel">Regra — a ponte com o Zotero</span><p><strong>Para artigos de periódico, envie o PDF, não a URL.</strong> O PDF que o Zotero baixou pelo acesso institucional (manual do Zotero, «Encontrar texto completo») entra inteiro, com nome padronizado, e o notebook cita a página certa. A URL da editora entra vazia ou com o resumo — e você não percebe até a resposta sair rasa.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide alt" id="s10" data-title="PDFs enviados e o resumo do notebook">
+  <div class="inner">
+    <div class="kicker-part rv">Fontes<span>4 de 7</span></div>
+    <h2 class="rv">PDFs enviados: a lista de fontes e o resumo do notebook</h2>
+    <div class="two rv">
+      <figure><div class="shot"><img src="capturas/gn_06_fontes_pdfs.jpg" width="1920" height="938" alt="Painel Fontes com PDFs enviados e, no painel Conversa, o resumo do notebook e as perguntas sugeridas"></div><figcaption><b>Figura 9</b> Depois do envio: cada PDF é uma fonte com caixa de seleção; o painel «Conversa» mostra o resumo do notebook, gerado a partir de todas as fontes, e as perguntas sugeridas.</figcaption></figure>
+      <div>
+        <ol>
+          <li>«Adicionar fontes» → «Enviar arquivos» → selecione os PDFs (vários de uma vez).</li>
+          <li>Aguarde: o resumo do notebook só aparece quando o processamento termina.</li>
+          <li>Leia o resumo como <em>teste de ingestão</em>: se um artigo que você sabe central não aparece nele, abra o guia da fonte e veja o que entrou.</li>
+          <li>Se um PDF entrou vazio (escaneado), passe <span class="gterm" tabindex="0" data-t="OCR" data-d="Reconhecimento óptico de caracteres: converte a imagem de um PDF escaneado em texto pesquisável; sem ele, o PDF entra vazio.">OCR</span> antes — o <span class="gterm" tabindex="0" data-t="Leitor · Editor" data-d="Papéis de compartilhamento: o Leitor conversa com as fontes e vê as notas; o Editor também adiciona e remove fontes, notas e materiais do Estúdio.">leitor</span> do Zotero e a maioria dos leitores de PDF fazem isso — e envie de novo.</li>
+        </ol>
+        <div class="tw"><table><thead><tr><th>Sinal</th><th>Significa</th><th>Ação</th></tr></thead><tbody>
+          <tr><td>Fonte com o nome do arquivo, sem erro</td><td>Entrou</td><td>Confira o guia da fonte</td></tr>
+          <tr><td>«Informações do erro»</td><td>Não entrou (formato, tamanho, paywall)</td><td>Clique para ler o motivo; troque URL por PDF</td></tr>
+          <tr><td>Resumo cita só parte das fontes</td><td>Alguma entrou vazia ou é muito curta</td><td>Pergunte «o que a fonte X contém?»</td></tr>
+          <tr><td>Contador chegou ao limite</td><td>Plano esgotado para este notebook</td><td>Divida por tema em outro notebook</td></tr>
+        </tbody></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s11" data-title="Descobrir fontes: Pesquisa rápida e Deep Research">
+  <div class="inner">
+    <div class="kicker-part rv">Fontes<span>5 de 7</span></div>
+    <h2 class="rv">Descobrir fontes: «Pesquisa rápida» × «Deep Research»</h2>
+    <div class="two rv">
+      <figure><div class="shot"><img src="capturas/gn_12_descobrir_fontes.jpg" width="1920" height="938" alt="Caixa Pesquise novas fontes na web com os seletores Web e Pesquisa rápida e a lista de resultados para aprovar"></div><figcaption><b>Figura 10</b> A caixa «Pesquise novas fontes na web» (seletores «Web» e «Pesquisa rápida»). O resultado aparece no próprio painel como «Pesquisa rápida concluída», com três propostas, «Mais n fontes», «Ver», «Excluir» e «Importar»: nada vira fonte antes de você importar.</figcaption></figure>
+      <figure><div class="shot"><img src="capturas/gn_12b_descobrir_resultados.jpg" width="1920" height="938" alt="Lista completa de fontes descobertas na web"></div><figcaption><b>Figura 11</b> «Ver» abre a lista completa («Descoberta de fontes»): cada proposta com título, origem e uma frase; marque as que passam na sua triagem e clique «Importar».</figcaption></figure>
+      <div>
+        <div class="tw"><table><thead><tr><th style="width:150px">Modo</th><th>O que faz</th><th>Cota</th></tr></thead><tbody>
+          <tr><td><b><span class="gterm" tabindex="0" data-t="Pesquisa rápida" data-d="Modo do Descobrir fontes que busca na web (ou no seu Drive) um conjunto pequeno de páginas relacionadas ao tema digitado.">Pesquisa rápida</span></b></td><td>Busca na web ou no seu Drive um conjunto pequeno de páginas sobre o tema</td><td>Conta nas conversas do dia</td></tr>
+          <tr><td><b><span class="gterm" tabindex="0" data-t="Deep Research" data-d="Modo do Descobrir fontes que percorre centenas de sites, monta um relatório com as fontes encontradas e permite adicioná-las ao notebook. Indisponível para menores de 18.">Deep Research</span></b></td><td>Percorre centenas de sites, monta um relatório e propõe as fontes</td><td>10 por mês no grátis; 3 por dia no Plus; 20 por dia no Pro; indisponível para menores de 18</td></tr>
+        </tbody></table></div>
+        <ol>
+          <li>Descreva o tema na caixa como uma pergunta de pesquisa, não como palavras soltas.</li>
+          <li>Escolha «Web» (ou Drive) e o modo; aguarde as propostas.</li>
+          <li>Abra cada proposta antes de aceitar: tipo de documento, autoria, data.</li>
+          <li>Aceite só o que passaria na sua triagem; o resto fica de fora.</li>
+        </ol>
+        <div class="trap"><span class="blabel">Armadilha</span><p><strong>Descobrir fontes não é busca sistemática.</strong> Ele traz o que a web mostra — blogs, notícias, páginas de editoras com o resumo — sem critério de inclusão, sem registro de string e sem contagem. Para uma revisão, a busca se faz nas bases (Scopus, Web of Science, SciELO, PubMed), com o protocolo do manual de Metodologia; o Descobrir serve para exploração inicial e para achar documentos públicos (normas, relatórios, legislação).</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide alt" id="s12" data-title="Google Drive com sincronização automática">
+  <div class="inner">
+    <div class="kicker-part rv">Fontes<span>6 de 7</span></div>
+    <h2 class="rv">Google Drive: fontes que se atualizam sozinhas</h2>
+    <p class="lead rv">Desde 26 de maio de 2026, um Google Docs, Slides ou Sheets adicionado pelo botão «Drive» é sincronizado automaticamente: o que você edita no documento aparece no notebook sem reenviar. É o caminho certo para o material que muda — fichamentos, diário de pesquisa, planilha de extração.</p>
+    <div class="two rv">
+      <div>
+        <ol>
+          <li>«Adicionar fontes» → «Drive».</li>
+          <li>Escolha o arquivo no seletor do Drive (Docs, Slides ou Sheets).</li>
+          <li>Docs, Slides e Sheets entram como fontes sincronizadas.</li>
+          <li>Depois de editar o documento, faça uma pergunta que dependa do trecho novo para confirmar que a sincronização chegou.</li>
+        </ol>
+        <div class="tw"><table><thead><tr><th style="width:120px">Arquivo</th><th>Limite</th><th>Bom uso na pesquisa</th></tr></thead><tbody>
+          <tr><td><b>Google Docs</b></td><td>500 mil palavras</td><td>Fichamentos, diário de pesquisa, rascunho do capítulo, transcrições de entrevistas</td></tr>
+          <tr><td><b>Google Sheets</b></td><td>100 mil tokens</td><td>Matriz de síntese, planilha de extração, log de buscas</td></tr>
+          <tr><td><b>Google Slides</b></td><td>Até 100 slides</td><td>Aula anterior, apresentação da qualificação</td></tr>
+        </tbody></table></div>
+      </div>
+      <div>
+        <div class="case"><span class="blabel">Caso de uso</span><p>Um Google Docs chamado «Fichamentos» com uma seção por artigo (referência, objetivo, método, resultado, citação com página). Adicionado pelo Drive uma única vez, ele acompanha a leitura: cada ficha nova entra sozinha, e a pergunta «quais estudos mediram X?» passa a responder também com as suas anotações — que citam a página, coisa que o PDF sozinho não faz.</p><span class="src">O fichamento é o do manual de Metodologia; aqui ele só ganha um lugar onde ser consultado.</span></div>
+        <div class="trap"><span class="blabel">Armadilha</span><p><strong>Planilha grande demais.</strong> Uma Sheets acima de 100 mil tokens entra cortada, sem aviso claro. Separe por aba ou exporte só as colunas que a pergunta usa.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s13" data-title="Fontes ativas, rótulos por tema e guia de fonte">
+  <div class="inner">
+    <div class="kicker-part rv">Fontes<span>7 de 7</span></div>
+    <h2 class="rv">Escolher quais fontes respondem, rotular por tema e ler o guia de fonte</h2>
+    <div class="two rv">
+      <figure><div class="shot"><img src="capturas/gn_07_guia_fonte.jpg" width="1920" height="938" alt="Guia de uma fonte aberto, com resumo, tópicos-chave e o texto completo da fonte"></div><figcaption><b>Figura 12</b> Clique no nome da fonte: o guia mostra o resumo, os tópicos-chave e o texto que de fato entrou. É onde se descobre se o PDF veio inteiro.</figcaption></figure>
+      <div>
+        <div class="tw"><table><thead><tr><th style="width:190px">Controle</th><th>O que faz</th><th>Quando usar</th></tr></thead><tbody>
+          <tr><td><b>Caixas de seleção</b></td><td>Só as fontes marcadas entram na resposta e nos materiais do Estúdio</td><td>Perguntar sobre um único artigo; comparar dois; excluir a própria tese ao gerar perguntas de banca</td></tr>
+          <tr><td><b>«Rotular suas fontes automaticamente por tema»</b></td><td>Agrupa as fontes em rótulos temáticos gerados pelo modelo</td><td>Notebooks com dezenas de fontes; selecionar um tema inteiro de uma vez</td></tr>
+          <tr><td><b>«Ordenar fontes»</b></td><td>Reordena a lista de fontes</td><td>Achar a fonte pelo nome «Autor - Ano»</td></tr>
+          <tr><td><b><span class="gterm" tabindex="0" data-t="Guia de fonte" data-d="Tela de uma fonte com resumo, tópicos-chave e o texto que de fato foi ingerido.">Guia de fonte</span></b></td><td>Resumo, tópicos-chave e o texto ingerido</td><td>Sempre, logo depois de adicionar</td></tr>
+        </tbody></table></div>
+        <div class="rule-box"><span class="blabel">Regra</span><p>Antes de qualquer pergunta que vá para o texto, <strong>olhe quais fontes estão marcadas</strong>. Uma resposta «do notebook» com só três fontes ativas não é uma síntese da literatura; é uma síntese de três artigos.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PARTE 3 ===================== -->
+<section class="slide divider" id="p3" data-title="Parte 3 · Conversar com as fontes"><div class="inner"><div class="kicker-part rv">Parte 3<span>Conversar com as fontes</span></div><h2 class="rv">Perguntar, conferir, guardar</h2><p class="rv">O resumo inicial, as perguntas que valem para pesquisa, a citação numerada que leva ao trecho, «Salvar como nota», «Opções de conversa» e «Personalizar notebook».</p></div><div class="num">03</div></section>
+
+<section class="slide" id="s14" data-title="Resumo inicial e perguntas sugeridas">
+  <div class="inner">
+    <div class="kicker-part rv">Conversar<span>1 de 5</span></div>
+    <h2 class="rv">O resumo inicial e as perguntas sugeridas: comece pelo teste</h2>
+    <p class="lead rv">Com as fontes carregadas, o painel «Conversa» abre com um resumo do notebook e algumas perguntas sugeridas. Não são a pesquisa; são o termômetro de que a ingestão deu certo — e o ponto de partida para as perguntas que você já tinha.</p>
+    <div class="two rv">
+      <div>
+        <ol>
+          <li>Leia o resumo: ele deve mencionar os temas que você sabe estar nas fontes.</li>
+          <li>Clique numa pergunta sugerida para ver o formato da resposta e as citações.</li>
+          <li>Faça a primeira pergunta sua na caixa «Faça uma pergunta ou crie algo» — a de inventário, no bloco ao lado.</li>
+          <li>Só depois passe às perguntas de pesquisa (próximo slide).</li>
+        </ol>
+        <div class="rule-box"><span class="blabel">Regra</span><p><strong>A primeira pergunta é sempre de inventário.</strong> Ela revela fontes vazias, PDFs cortados e duplicatas antes que uma síntese errada pareça certa.</p></div>
+      </div>
+      <div>
+        <div class="code"><div class="code-head">prompt — inventário das fontes (teste de ingestão)</div><pre>Para cada fonte deste notebook, liste em uma tabela:
+nome da fonte · tipo de documento (artigo, capítulo, norma, site…) ·
+autores e ano, se constarem · objetivo declarado em uma frase ·
+número aproximado de páginas ou seções que você consegue ver.
+Se alguma fonte estiver vazia, ilegível ou contiver só um resumo,
+diga isso explicitamente na linha dela.</pre></div>
+        <div class="trap"><span class="blabel">Armadilha</span><p><strong>Aceitar o resumo inicial como síntese da literatura.</strong> Ele é um panorama das fontes carregadas, não da área. Serve para checar; não serve para citar.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide alt" id="s15" data-title="Perguntas boas para pesquisa">
+  <div class="inner">
+    <div class="kicker-part rv">Conversar<span>2 de 5</span></div>
+    <h2 class="rv">Perguntas boas para pesquisa: seis tipos e o prompt de cada um</h2>
+    <div class="tw rv"><table><thead><tr><th style="width:170px">Tipo</th><th>Para quê</th><th>Prompt (cole e adapte)</th></tr></thead><tbody>
+      <tr><td><b>Síntese comparativa</b></td><td>Ver como as fontes tratam o mesmo tema</td><td class="mono">Compare como cada fonte define e mede [conceito]. Organize em tabela: fonte · definição · instrumento · principal achado. Cite o trecho de cada célula.</td></tr>
+      <tr><td><b>Lacunas</b></td><td>Achar o que ninguém estudou</td><td class="mono">Quais perguntas as fontes declaram como não respondidas ou como sugestão para estudos futuros? Liste por fonte, com a citação. Não acrescente lacunas que as fontes não mencionem.</td></tr>
+      <tr><td><b>Métodos</b></td><td>Inventariar desenhos e amostras</td><td class="mono">Para cada fonte empírica: desenho do estudo · população ou amostra (n) · instrumento de coleta · análise · limitações declaradas pelos autores. Marque «não informado» quando faltar.</td></tr>
+      <tr><td><b>Definições</b></td><td>Fixar termos antes de escrever</td><td class="mono">Como as fontes definem [termo]? Transcreva cada definição entre aspas, com autor, ano e a citação. Aponte diferenças entre elas.</td></tr>
+      <tr><td><b>Contradições</b></td><td>Encontrar divergências entre fontes</td><td class="mono">Em que pontos as fontes discordam entre si (resultados, definições, recomendações)? Para cada ponto, cite as duas posições com os trechos.</td></tr>
+      <tr><td><b>Extração para a matriz</b></td><td>Preencher a matriz de síntese</td><td class="mono">Preencha uma tabela com uma linha por fonte e estas colunas: objetivo · contexto · método · amostra · resultado principal · limitação. Uma frase por célula, com citação.</td></tr>
+    </tbody></table></div>
+    <div class="two rv">
+      <div class="rule-box"><span class="blabel">Regra — três partes de todo prompt</span><p><strong>Escopo</strong> («nas fontes selecionadas»), <strong>formato</strong> (tabela, lista, uma frase por célula) e <strong>o que fazer na falta</strong> («marque não informado»; «não acrescente o que as fontes não dizem»). A terceira parte é a que separa uma resposta fundamentada de uma resposta completada com o que o modelo sabe de fora.</p></div>
+      <div class="note"><span class="blabel">Como decidir o que perguntar</span><p>As perguntas de uma revisão vêm do protocolo (manual de Metodologia); as perguntas de leitura, da estrutura <span class="gterm" tabindex="0" data-t="IMRaD" data-d="Estrutura padrão do artigo científico: Introdução, Métodos, Resultados e Discussão (Introduction, Methods, Results and Discussion).">IMRaD</span> (slide 33). O notebook responde bem ao que é específico e verificável; responde mal a «o que você acha?».</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s16" data-title="Citações numeradas: conferir o trecho">
+  <div class="inner">
+    <div class="kicker-part rv">Conversar<span>3 de 5</span></div>
+    <h2 class="rv">Citações numeradas: um clique leva ao trecho — e o trecho é o que vale</h2>
+    <div class="two rv">
+      <figure><div class="shot"><img src="capturas/gn_08_pergunta_citacoes.jpg" width="1920" height="938" alt="Resposta do notebook com números de citação entre colchetes ao longo do texto"></div><figcaption><b>Figura 13</b> Cada afirmação da resposta traz um número. O número identifica um trecho de uma fonte, não a fonte inteira.</figcaption></figure>
+      <figure><div class="shot"><img src="capturas/gn_09_citacao_trecho.jpg" width="1920" height="938" alt="Trecho da fonte destacado após o clique na citação numerada"></div><figcaption><b>Figura 14</b> Ao clicar, o painel de fontes abre a passagem exata, destacada. É aqui que se confere se a resposta disse o que a fonte diz.</figcaption></figure>
+    </div>
+    <div class="two rv">
+      <ol>
+        <li>Clique no número: o painel de fontes abre a passagem exata, destacada.</li>
+        <li>Leia o trecho inteiro, não só a frase destacada: o contexto muda o sentido («os autores relatam» ≠ «os autores concluem»).</li>
+        <li>Anote a página ou seção — a citação do notebook não traz número de página; você o encontra no PDF.</li>
+        <li>Frase sem número é frase sem fonte: trate-a como conjectura do modelo.</li>
+      </ol>
+      <div>
+        <div class="rule-box"><span class="blabel">Regra</span><p><strong>Nada vai para o texto sem o trecho conferido.</strong> O que se cita no trabalho é o artigo (autor, ano, página), no estilo do programa; a citação numerada é um endereço interno do notebook, não uma referência.</p></div>
+        <div class="trap"><span class="blabel">Armadilha</span><p><strong>Citação certa, afirmação errada.</strong> O número aponta para um trecho que existe, mas a frase da resposta generaliza, inverte ou mistura duas fontes. É o erro mais comum e o mais difícil de ver sem abrir o trecho.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide alt" id="s17" data-title="Salvar como nota">
+  <div class="inner">
+    <div class="kicker-part rv">Conversar<span>4 de 5</span></div>
+    <h2 class="rv">«Salvar como nota»: o que vale a pena guardar sai da conversa</h2>
+    <div class="two rv">
+      <figure><div class="shot"><img src="capturas/gn_10_salvar_nota.jpg" width="1920" height="938" alt="Botão Salvar como nota abaixo de uma resposta e a nota criada no painel Estúdio"></div><figcaption><b>Figura 15</b> Abaixo do resumo inicial, «Salvar como nota»; abaixo de cada resposta, «Salvar nas observações». A nota vai para o painel «Estúdio», com o texto e as citações numeradas.</figcaption></figure>
+      <div>
+        <ol>
+          <li>Depois de conferir as citações, clique em «Salvar nas observações» abaixo da resposta (no resumo inicial o botão se chama «Salvar como nota»).</li>
+          <li>Renomeie a nota com o tipo e o tema: <code>Matriz · métodos · v1</code>, <code>Definições · resiliência</code>.</li>
+          <li>Para escrever uma nota sua, use «Adicionar nota» no Estúdio (não funciona no aplicativo móvel).</li>
+          <li>Ao fechar uma etapa, exporte as notas para o Google Docs (slide 30): é o que sobrevive se o notebook for apagado.</li>
+        </ol>
+        <div class="tw"><table><thead><tr><th>Fato</th><th>Valor</th></tr></thead><tbody>
+          <tr><td>Notas por notebook</td><td class="num">até 1.000</td></tr>
+          <tr><td>Exportação</td><td>Google Docs e Google Sheets</td></tr>
+          <tr><td>Criar nota no aplicativo móvel</td><td>Não</td></tr>
+          <tr><td>Histórico da conversa</td><td>Pode ser apagado; o que não virou nota some com ele</td></tr>
+        </tbody></table></div>
+        <div class="rule-box"><span class="blabel">Regra</span><p>A conversa é rascunho; a nota é registro. Salve como nota só o que já foi conferido — assim a nota nunca contém uma afirmação que você não checou.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s18" data-title="Opções de conversa, Personalizar notebook e histórico">
+  <div class="inner">
+    <div class="kicker-part rv">Conversar<span>5 de 5</span></div>
+    <h2 class="rv">«Opções de conversa», «Personalizar notebook» e o histórico</h2>
+    <div class="two rv">
+      <figure><div class="shot"><img src="capturas/gn_11_opcoes_conversa.jpg" width="1920" height="938" alt="Painel Opções de conversa com o estilo de conversa e o tamanho da resposta"></div><figcaption><b>Figura 16</b> O ícone de ajustes do painel «Conversa» («Configurar notebook») abre «Configurar as conversas»: «Defina sua meta, estilo ou papel na conversa» («Padrão», «Guia de aprendizado», «Personalizado») e «Escolha o tamanho da resposta» («Padrão», «Mais longa», «Mais curta»). Vale para o notebook inteiro até você mudar.</figcaption></figure>
+      <div>
+        <div class="tw"><table><thead><tr><th style="width:170px">Controle</th><th>O que faz</th><th>Recomendação para pesquisa</th></tr></thead><tbody>
+          <tr><td><b>Estilo «Padrão»</b></td><td>Resposta direta, com citações</td><td>Extração, síntese, matriz</td></tr>
+          <tr><td><b>Estilo «Guia de aprendizado»</b></td><td>Explica passo a passo, faz perguntas de volta</td><td>Estudar um método novo; preparar-se para a banca</td></tr>
+          <tr><td><b>Estilo «Personalizado»</b></td><td>Você escreve as instruções de comportamento</td><td>«Responda só com o que as fontes dizem; marque não informado; cite sempre»</td></tr>
+          <tr><td><b>Tamanho da resposta</b></td><td>Mais curta ou mais longa</td><td>Curta para inventário; longa para síntese</td></tr>
+          <tr><td><b>«Personalizar notebook»</b> (menu ⋮ da Conversa)</td><td>Imagem de capa, título e «Definir resumo personalizado do notebook»</td><td>Escreva o resumo você mesmo quando o gerado não descrever o corpus; as instruções de comportamento vão no estilo «Personalizado»</td></tr>
+          <tr><td><b>Histórico</b> («Excluir histórico de conversa», no mesmo menu ⋮)</td><td>Conversas anteriores; pode ser apagado</td><td>Apague quando trocar de pergunta de pesquisa — o contexto velho contamina o novo</td></tr>
+        </tbody></table></div>
+        <div class="code"><div class="code-head">estilo «Personalizado» — instrução sugerida para pesquisa</div><pre>Você responde apenas com base nas fontes selecionadas deste notebook.
+Responda em português do Brasil. Quando a informação não estiver nas
+fontes, escreva «não informado nas fontes» em vez de completar.
+Sempre cite o trecho. Prefira tabelas quando eu pedir comparação.
+Não use adjetivos avaliativos («excelente», «robusto») que as fontes não usem.</pre></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PARTE 4 ===================== -->
+<section class="slide divider" id="p4" data-title="Parte 4 · Estúdio"><div class="inner"><div class="kicker-part rv">Parte 4<span>Estúdio</span></div><h2 class="rv">Nove formatos a partir das mesmas fontes</h2><p class="rv"><span class="gterm" tabindex="0" data-t="Resumo em Áudio" data-d="Conversa gerada entre duas vozes sobre as fontes; formatos Deep Dive, Brief, Critique e Debate; modo interativo «Participar»; 80 idiomas ou mais.">Resumo em Áudio</span>, <span class="gterm" tabindex="0" data-t="Resumo em Vídeo" data-d="Vídeo narrado gerado a partir das fontes; formatos Explicativo, Curto e Cinematográfico (só em inglês).">Resumo em Vídeo</span>, Mapa mental, Relatórios, Cartões didáticos, Teste, Infográfico, Apresentação de slides e <span class="gterm" tabindex="0" data-t="Tabela de dados" data-d="Formato do Estúdio que extrai das fontes uma tabela estruturada — uma linha por fonte ou por item — exportável para o Google Sheets.">Tabela de dados</span> — e as notas que saem para o Google Docs.</p></div><div class="num">04</div></section>
+
+<section class="slide" id="s19" data-title="O painel Estúdio">
+  <div class="inner">
+    <div class="kicker-part rv">Estúdio<span>1 de 6 · limites verificados em 08/09/2026</span></div>
+    <h2 class="rv">O painel «Estúdio»: o que cada formato entrega e quanto se pode gerar por dia</h2>
+    <p class="lead rv">Tudo que o Estúdio produz vem das <em>fontes selecionadas</em> naquele momento. Antes de clicar, marque só as fontes que devem entrar. Os materiais ficam guardados no notebook, ao lado das notas.</p>
+    <div class="tw rv"><table><thead><tr><th style="width:170px">Formato</th><th>Entrega</th><th>Uso na pesquisa</th><th class="num">Grátis</th><th class="num">Plus</th><th class="num">Pro</th></tr></thead><tbody>
+      <tr><td><b>Resumo em Áudio</b></td><td>Conversa entre duas vozes sobre as fontes; formatos «Análise detalhada», «Resumo», «Crítica» e «Debate»; duração «Curto» ou «Padrão»; modo interativo</td><td>Ouvir a crítica de um artigo no trajeto; revisar antes da banca</td><td class="num">3/dia</td><td class="num">6/dia</td><td class="num">20/dia</td></tr>
+      <tr><td><b>Resumo em Vídeo</b></td><td>Vídeo narrado com slides gerados; Explicativo, Curto, Cinematográfico</td><td>Material de aula; divulgação</td><td class="num">3/dia</td><td class="num">6/dia</td><td class="num">20/dia</td></tr>
+      <tr><td><b>Mapa mental</b></td><td>Árvore de conceitos navegável; cada nó vira pergunta</td><td>Estruturar o capítulo de revisão; ver o vocabulário da área</td><td class="num" rowspan="4">10/dia<br>(somados)</td><td class="num" rowspan="4">20/dia<br>(somados)</td><td class="num" rowspan="4">100/dia<br>(somados)</td></tr>
+      <tr><td><b>Relatórios</b></td><td>FAQ, guia de estudo, documento de briefing, ou o tipo sugerido pela IA</td><td>Briefing para o orientador; FAQ de um método</td></tr>
+      <tr><td><b>Cartões didáticos</b></td><td>Pares pergunta–resposta para memorizar</td><td>Definições e números para a banca</td></tr>
+      <tr><td><b>Teste</b></td><td>Questões de múltipla escolha com correção</td><td>Autoavaliação antes da qualificação</td></tr>
+      <tr><td><b>Infográfico</b></td><td>Imagem com os pontos principais</td><td>Pôster, aula; indisponível para menores de 18</td><td class="num" colspan="3">Não listado na tabela de limites da ajuda</td></tr>
+      <tr><td><b>Apresentação de slides</b></td><td>Conjunto de slides a partir das fontes</td><td>Rascunho de aula ou seminário; indisponível para menores de 18</td><td class="num" colspan="3">Não listado na tabela de limites da ajuda</td></tr>
+      <tr><td><b>Tabela de dados</b></td><td>Tabela estruturada extraída das fontes</td><td>Triagem de PDFs; matriz de síntese</td><td class="num" colspan="3">Não listado na tabela de limites da ajuda</td></tr>
+    </tbody></table></div>
+    <div class="rule-box rv"><span class="blabel">Regra</span><p>Material do Estúdio é <strong>meio</strong>, não <strong>fonte</strong>. Nenhum áudio, vídeo, mapa ou relatório é citável no trabalho; o que se cita é o artigo de onde o material saiu, depois de conferido.</p></div>
+  </div>
+</section>
+
+<section class="slide alt" id="s20" data-title="Resumo em Áudio">
+  <div class="inner">
+    <div class="kicker-part rv">Estúdio<span>2 de 6</span></div>
+    <h2 class="rv">«Resumo em Áudio»: quatro formatos, duração, modo interativo e português do Brasil</h2>
+    <div class="two rv">
+      <figure><div class="shot"><img src="capturas/gn_15a_resumo_audio_dialogo.jpg" width="1920" height="938" alt="Opções de geração do Resumo em Áudio com formato, idioma e o botão de personalizar"></div><figcaption><b>Figura 17</b> «Personalizar o Resumo em Áudio»: formato («Análise detalhada», «Resumo», «Crítica», «Debate»), idioma, duração («Curto» ou «Padrão»), fontes e o foco do episódio.</figcaption></figure>
+      <div>
+        <div class="tw"><table><thead><tr><th style="width:110px">Formato</th><th>O que é</th><th>Para quê</th></tr></thead><tbody>
+          <tr><td><b>Análise detalhada</b> (Deep Dive)</td><td>Conversa animada entre dois apresentadores; a padrão</td><td>Panorama de um conjunto de artigos</td></tr>
+          <tr><td><b>Resumo</b> (Brief)</td><td>Visão geral breve das ideias principais</td><td>Lembrar do que trata um artigo antes da reunião</td></tr>
+          <tr><td><b>Crítica</b> (Critique)</td><td>Análise especializada com <span class="gterm" tabindex="0" data-t="Feedback" data-d="Polegar para cima ou para baixo e «reportar» numa resposta; em conta pessoal, é o único caminho pelo qual o conteúdo pode passar por revisão humana (retenção de até 3 anos).">feedback</span> construtivo</td><td>Preparar a discussão de um artigo; antecipar a banca</td></tr>
+          <tr><td><b>Debate</b></td><td>Dois apresentadores com perspectivas diferentes</td><td>Temas em que as fontes divergem</td></tr>
+        </tbody></table></div>
+        <ol>
+          <li>Marque as fontes; no Estúdio, «Resumo em Áudio» → formato → idioma («português (Brasil)» entre os 80 ou mais disponíveis) → duração («Curto» ou «Padrão»).</li>
+          <li>Na personalização, diga o foco: «concentre-se na seção de métodos e nas limitações».</li>
+          <li>Gere; ouça no notebook, no aplicativo ou baixe o arquivo.</li>
+          <li>«Participar» abre o modo interativo: você interrompe e faz perguntas por voz.</li>
+        </ol>
+        <div class="trap"><span class="blabel">Armadilha</span><p><strong>Ouvir em vez de ler.</strong> O áudio é um convite à leitura, não a leitura: simplifica, omite números e às vezes inventa uma anedota para dar ritmo. Nada dele vai para o texto sem passar pelo trecho na fonte.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s21" data-title="Resumo em Vídeo">
+  <div class="inner">
+    <div class="kicker-part rv">Estúdio<span>3 de 6</span></div>
+    <h2 class="rv">«Resumo em Vídeo»: «Curta», «Vídeo explicativo» — e o Cinematográfico, só em inglês</h2>
+    <div class="two rv">
+      <figure><div class="shot"><img src="capturas/gn_16a_resumo_video_dialogo.jpg" width="1920" height="938" alt="Opções do Resumo em Vídeo com os formatos e os estilos visuais"></div><figcaption><b>Figura 18</b> «Personalizar o Resumo em Vídeo»: formato («Curta», marcado como novidade, ou «Vídeo explicativo»), idioma, fontes e o foco. O vídeo usa narração e imagens geradas a partir das fontes selecionadas.</figcaption></figure>
+      <div>
+        <div class="tw"><table><thead><tr><th style="width:140px">Formato</th><th>O que é</th><th>Restrições</th></tr></thead><tbody>
+          <tr><td><b>Vídeo explicativo</b></td><td>Visão geral abrangente e estruturada, mais longa</td><td>—</td></tr>
+          <tr><td><b>Curta</b></td><td>Breve visão geral, vertical, cerca de um minuto (o exemplo gerado teve 1 min 19 s)</td><td>—</td></tr>
+          <tr><td><b>Cinematográfico</b></td><td>Cenas geradas, estética de filme</td><td>Só em inglês; maiores de 18; no Pro, 2 por dia além da cota; não apareceu no diálogo do plano Plus em 08/09/2026</td></tr>
+        </tbody></table></div>
+        <p style="font-family:var(--cond);font-size:13.5px;color:var(--ink-2)">Estilos visuais: Classic, Whiteboard, Watercolor, Retro Print, Heritage, Paper-craft, Kawaii, Anime.</p>
+        <ol>
+          <li>Marque as fontes; «Resumo em Vídeo» → formato → estilo.</li>
+          <li>Na personalização, defina público e foco («alunos de graduação; só o método e o resultado principal»).</li>
+          <li>Gere e assista; baixe para usar em aula.</li>
+        </ol>
+        <div class="note"><span class="blabel">Bom uso</span><p>Rascunho de material didático a partir de artigos que você já leu — para ser revisado, não publicado como está. Para a pesquisa em si, o vídeo raramente compensa a cota: prefira o áudio «Critique» ou o relatório.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide alt" id="s22" data-title="Mapa mental e Relatórios">
+  <div class="inner">
+    <div class="kicker-part rv">Estúdio<span>4 de 6</span></div>
+    <h2 class="rv">«Mapa mental» e «Relatórios»: a estrutura da área e o texto de apoio</h2>
+    <div class="two rv">
+      <figure><div class="shot"><img src="capturas/gn_13_mapa_mental.jpg" width="1920" height="938" alt="Mapa mental gerado a partir das fontes, com ramos expansíveis"></div><figcaption><b>Figura 19</b> «Mapa mental»: cada ramo se expande; clicar num nó envia à «Conversa» a pergunta «o que as fontes dizem sobre [nó]» (o texto gerado saiu em inglês na captura).</figcaption></figure>
+      <figure><div class="shot"><img src="capturas/gn_14_relatorio.jpg" width="1920" height="938" alt="Escolha do tipo de relatório: FAQ, guia de estudo, documento de briefing e sugestão da IA"></div><figcaption><b>Figura 20</b> «Criar relatório»: «Crie do zero», «Documento de resumo», «Guia de estudo», «Post de blog» e, abaixo, formatos sugeridos pelas fontes (na captura: plano de implementação, relatório técnico, guia de conflitos, relatório de pesquisa). O texto sai com citações.</figcaption></figure>
+    </div>
+    <div class="two rv">
+      <div>
+        <h4>Mapa mental — para quê</h4>
+        <ul class="bul">
+          <li>Ver o vocabulário e as subdivisões que as fontes usam antes de estruturar o capítulo de revisão.</li>
+          <li>Descobrir ramos que a sua pergunta de pesquisa ainda não cobre.</li>
+          <li class="warn">A hierarquia é do modelo, não da área: confira os ramos contra as fontes e contra a literatura de referência.</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Relatórios — qual escolher</h4>
+        <div class="tw"><table><thead><tr><th style="width:170px">Tipo</th><th>Quando</th></tr></thead><tbody>
+          <tr><td><b>Documento de resumo</b> (briefing)</td><td>Resumo executivo de um conjunto de artigos para o orientador ou o grupo</td></tr>
+          <tr><td><b>Guia de estudo</b></td><td>Estudar um método ou uma teoria a partir de dois ou três textos-base</td></tr>
+          <tr><td><b>FAQ</b> · <b>Post de blog</b></td><td>Antecipar perguntas de banca ou de alunos; divulgar o tema em linguagem acessível</td></tr>
+          <tr><td><b>Sugerido pela IA</b></td><td>Quando o notebook tem um tipo de material que pede formato próprio (por exemplo, uma norma)</td></tr>
+        </tbody></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s23" data-title="Cartões didáticos e Teste">
+  <div class="inner">
+    <div class="kicker-part rv">Estúdio<span>5 de 6</span></div>
+    <h2 class="rv">«Cartões didáticos» e «Teste»: memorizar e se autoavaliar a partir das fontes</h2>
+    <div class="two rv">
+      <figure><div class="shot"><img src="capturas/gn_17a_cartoes_dialogo.jpg" width="1920" height="938" alt="Cartões didáticos e um teste de múltipla escolha gerados a partir das fontes"></div><figcaption><b>Figura 21</b> «Cartões de estudo»: número de cards («Menos», «Padrão», «Mais»), nível de dificuldade («Fácil», «Médio», «Difícil»), fontes e tema; o baralho abre no Estúdio (pergunta na frente, «Veja a resposta» atrás). «Teste» segue o mesmo diálogo, com correção e explicação.</figcaption></figure>
+      <figure><div class="shot"><img src="capturas/gn_17_cartoes_teste.jpg" width="1920" height="938" alt="Cartões didáticos gerados"></div><figcaption><b>Figura 22</b> O baralho gerado (1 de 30): a pergunta cita a fonte («De acordo com Munafò (2017)…»); setas para navegar e contagem de acertos.</figcaption></figure>
+      <div>
+        <ol>
+          <li>Selecione só as fontes do tema (por exemplo, os três artigos que fundamentam um conceito).</li>
+          <li>No Estúdio, «Cartões didáticos» ou «Teste»; na personalização, informe o nível e o foco («definições e números; nível de pós-graduação»).</li>
+          <li>Responda; nos itens errados, clique na explicação e abra a citação para conferir.</li>
+          <li>Salve o conjunto como nota se for reutilizar antes da banca.</li>
+        </ol>
+        <div class="tw"><table><thead><tr><th>Bom para</th><th>Ruim para</th></tr></thead><tbody>
+          <tr><td>Fixar definições, siglas, valores de referência, autores de cada conceito</td><td>Substituir a compreensão do argumento — um cartão não explica <em>por quê</em></td></tr>
+          <tr><td>Antecipar perguntas de banca sobre a própria tese</td><td>Avaliar alunos sem revisão: o gabarito é do modelo e pode estar errado</td></tr>
+        </tbody></table></div>
+        <div class="note"><span class="blabel">Cotas</span><p>Cartões, testes, relatórios e mapas mentais compartilham a mesma cota diária: 10 no grátis, 20 no Plus, 100 no Pro.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide alt" id="s24" data-title="Infográfico, Apresentação de slides e Tabela de dados">
+  <div class="inner">
+    <div class="kicker-part rv">Estúdio<span>6 de 6</span></div>
+    <h2 class="rv">«Infográfico», «Apresentação de slides» e «Tabela de dados»; notas e exportação para o Docs</h2>
+    <div class="three rv">
+      <figure><div class="shot"><img src="capturas/gn_23_infografico.jpg" width="1920" height="938" alt="Infográfico gerado a partir das fontes"></div><figcaption><b>Figura 23</b> «Infográfico»: idioma, orientação («Paisagem», «Retrato», «Quadrado»), estilo visual (seleção automática, kawaii, argila, esboço de anotação, anime…), nível de detalhamento e descrição. Indisponível para menores de 18.</figcaption></figure>
+      <figure><div class="shot"><img src="capturas/gn_24a_apresentacao_dialogo.jpg" width="1920" height="938" alt="Apresentação de slides gerada a partir das fontes"></div><figcaption><b>Figura 24</b> «Apresentação de slides»: «Apresentação detalhada» (texto completo) ou «Slides do apresentador» (visuais, para você falar), duração «Curto» ou «Padrão», idioma e descrição. Indisponível para menores de 18.</figcaption></figure>
+      <figure><div class="shot"><img src="capturas/gn_18b_tabela_dados_expandida.jpg" width="1920" height="938" alt="Tabela de dados gerada a partir das fontes, com uma linha por fonte"></div><figcaption><b>Figura 25</b> «Tabela de dados», expandida: a matriz de síntese com as colunas pedidas no diálogo e a coluna «Fonte» com a citação numerada. Repare na linha «Liberati et al., 2009»: não é uma fonte do notebook — veio de uma citação dentro do PDF do PRISMA. Conferir célula a célula inclui conferir as linhas.</figcaption></figure>
+    </div>
+    <div class="two rv">
+      <div>
+        <ul class="bul">
+          <li><strong>Tabela de dados</strong>: peça as colunas explicitamente («objetivo · método · amostra · resultado · limitação»); é a base da triagem (slide 32) e da matriz de síntese (slide 34).</li>
+          <li><strong>Apresentação de slides</strong>: use como esqueleto; substitua o texto gerado pelo seu e as figuras pelas das fontes, com crédito.</li>
+          <li><strong>Infográfico</strong>: só para divulgação, depois de conferir cada número na fonte.</li>
+        </ul>
+      </div>
+      <div>
+        <figure style="margin-top:0"><div class="shot"><img src="capturas/gn_25_notas.jpg" width="1920" height="938" alt="Lista de notas no Estúdio com a opção de exportar para o Google Docs"></div><figcaption><b>Figura 26</b> As notas ficam no Estúdio; «Adicionar nota» cria uma sua. Selecione notas para exportar ao Google Docs (ou Sheets, no caso de tabelas).</figcaption></figure>
+        <div class="rule-box"><span class="blabel">Regra</span><p>Ao fechar cada etapa, exporte as notas e as tabelas para o Docs ou o Sheets e guarde-os na pasta do projeto. O notebook não tem histórico de versões; o Docs tem.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PARTE 5 ===================== -->
+<section class="slide divider" id="p5" data-title="Parte 5 · Fluxos para pesquisa"><div class="inner"><div class="kicker-part rv">Parte 5<span>Fluxos para pesquisa</span></div><h2 class="rv">Seis fluxos, do primeiro PDF à banca</h2><p class="rv">Triagem de uma pilha de PDFs, leitura profunda de um artigo, matriz de síntese de uma revisão, preparação de aula, defesa — e a integração com o Zotero e com os agentes dos outros manuais.</p></div><div class="num">05</div></section>
+
+<section class="slide" id="s25" data-title="Fluxo A · Triagem inicial de uma pilha de PDFs">
+  <div class="inner">
+    <div class="kicker-part rv">Fluxos<span>A · triagem de uma pilha de PDFs</span></div>
+    <h2 class="rv">Fluxo A — triagem inicial: o que cada artigo mede, com que método, em que população</h2>
+    <p class="lead rv">Situação: trinta PDFs vindos da busca ou do orientador, e a pergunta «quais deles eu leio primeiro?». O notebook faz o inventário; a decisão de incluir continua sendo sua, com os critérios do protocolo.</p>
+    <div class="two rv">
+      <div>
+        <ol>
+          <li>Crie um notebook «Triagem · tema · data». Envie os PDFs (até 50 no grátis; divida em lotes se passar).</li>
+          <li>Rode a pergunta de inventário (slide 19) e corrija o que entrou vazio.</li>
+          <li>No Estúdio, «Tabela de dados» com o prompt ao lado — ou a mesma pergunta na Conversa, para ver as citações.</li>
+          <li>Exporte a tabela para o Sheets; acrescente as colunas «decisão» e «motivo» e preencha-as <em>você</em>, abrindo cada trecho citado.</li>
+          <li>Registre no log da revisão: quantos entraram, quantos saíram, por que motivo.</li>
+        </ol>
+        <div class="rule-box"><span class="blabel">Regra</span><p>A coluna «decisão» nunca é preenchida pelo notebook. Critério de inclusão é decisão de método (manual de Metodologia); a IA prepara a mesa, não senta nela.</p></div>
+      </div>
+      <div>
+        <div class="code"><div class="code-head">prompt — tabela de triagem (Conversa ou Tabela de dados)</div><pre>Monte uma tabela com uma linha por fonte e estas colunas:
+fonte · ano · país ou contexto · o que o estudo mede (variável ou
+fenômeno principal) · desenho do estudo · população ou amostra (n) ·
+instrumento ou fonte de dados · resultado principal em uma frase ·
+limitação declarada pelos autores.
+Use «não informado» quando a fonte não trouxer o dado.
+Não classifique a relevância; não omita nenhuma fonte.</pre></div>
+        <div class="trap"><span class="blabel">Armadilha</span><p><strong>Deixar o notebook «ranquear» os artigos.</strong> Pedir «quais são os mais relevantes» produz uma ordem sem critério declarado. Peça os dados; aplique o critério.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide alt" id="s26" data-title="Fluxo B · Leitura profunda de um artigo">
+  <div class="inner">
+    <div class="kicker-part rv">Fluxos<span>B · leitura profunda de um artigo</span></div>
+    <h2 class="rv">Fluxo B — leitura profunda: uma pergunta por seção IMRaD</h2>
+    <p class="lead rv">Situação: um artigo central que você precisa entender de verdade. Selecione <strong>só ele</strong> nas fontes e percorra as seções com perguntas fechadas; cada resposta abre o trecho que você lê na íntegra.</p>
+    <div class="two rv">
+      <div class="tw"><table><thead><tr><th style="width:120px">Seção</th><th>Pergunta ao notebook</th><th>O que conferir no trecho</th></tr></thead><tbody>
+        <tr><td><b>Introdução</b></td><td>Qual é o problema, a lacuna declarada e o objetivo? Transcreva a frase do objetivo.</td><td>Se o objetivo transcrito é o mesmo do resumo e da conclusão</td></tr>
+        <tr><td><b>Métodos</b></td><td>Desenho, população, amostra, instrumentos, análise, aprovação ética. «Não informado» quando faltar.</td><td>Números da amostra e critérios de exclusão</td></tr>
+        <tr><td><b>Resultados</b></td><td>Liste cada resultado com o número que o sustenta e a tabela ou figura de origem.</td><td>Os números nas tabelas; unidades; intervalos</td></tr>
+        <tr><td><b>Discussão</b></td><td>O que os autores afirmam ter demonstrado, o que admitem como limitação, o que propõem para estudos futuros.</td><td>Se a afirmação não ultrapassa o resultado</td></tr>
+        <tr><td><b>Referências</b></td><td>Quais obras os autores usam para fundamentar o método? Liste autor e ano como aparecem.</td><td>Candidatas ao <em>snowballing</em> — vão para o Zotero, não para o texto</td></tr>
+      </tbody></table></div>
+      <div>
+        <div class="code"><div class="code-head">prompt — fichamento guiado do artigo selecionado</div><pre>Considere apenas a fonte selecionada. Responda em tópicos, um por
+seção (Introdução, Métodos, Resultados, Discussão), sempre com a
+citação do trecho. Em «Resultados», traga os números e a tabela ou
+figura de origem. Em «Discussão», separe: (a) o que os autores
+afirmam ter demonstrado; (b) limitações que eles declaram;
+(c) sugestões para estudos futuros. Não avalie o artigo.</pre></div>
+        <div class="rule-box"><span class="blabel">Regra</span><p>Ao final, o fichamento vai para o Zotero (nota do item, com página) ou para o Docs de fichamentos sincronizado (slide 16) — nunca fica só na conversa.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s27" data-title="Fluxo C · Matriz de síntese de uma revisão">
+  <div class="inner">
+    <div class="kicker-part rv">Fluxos<span>C · matriz de síntese</span></div>
+    <h2 class="rv">Fluxo C — matriz de síntese: uma pergunta por coluna, uma fonte por linha, cada célula conferida</h2>
+    <div class="two rv">
+      <div>
+        <ol>
+          <li>Notebook «Síntese · revisão · data» só com os estudos <em>incluídos</em> — não com a pilha da triagem.</li>
+          <li>Defina as colunas a partir das perguntas da revisão (do protocolo), não do que o notebook sugere.</li>
+          <li>Peça a matriz por «Tabela de dados» ou na Conversa (prompt ao lado). Para muitas fontes, peça em lotes de dez: a qualidade cai com o tamanho da resposta.</li>
+          <li>Exporte para o Sheets. Abra o trecho de <strong>cada célula</strong> e marque na planilha «conferido» ou «corrigido».</li>
+          <li>Só então faça as perguntas transversais: convergências, contradições (slide 20), lacunas — e leia-as com a matriz conferida ao lado.</li>
+        </ol>
+        <div class="trap"><span class="blabel">Armadilha</span><p><strong>Matriz bonita, célula errada — ou linha a mais.</strong> Na captura da Tabela de dados deste manual, o modelo incluiu «Liberati et al., 2009», que não é fonte do notebook: veio de uma citação dentro do PDF do PRISMA. Uma célula «n = 120» que no artigo é «n = 12» passa despercebida numa tabela de 30 linhas. É o motivo de a conferência ser célula a célula, e de a matriz final viver na planilha, não no notebook.</p></div>
+      </div>
+      <div>
+        <div class="code"><div class="code-head">prompt — matriz de síntese (colunas do protocolo)</div><pre>Preencha uma tabela com uma linha por fonte selecionada e as colunas:
+[pergunta 1 da revisão] · [pergunta 2] · [pergunta 3] ·
+contexto do estudo · método · amostra · resultado principal ·
+limitação declarada.
+Uma frase por célula, com a citação. Escreva «não informado»
+quando a fonte não responder à pergunta. Não resuma entre fontes;
+não acrescente fontes que não estejam selecionadas.</pre></div>
+        <div class="tw"><table><thead><tr><th>Etapa</th><th>Quem faz</th><th>Onde fica</th></tr></thead><tbody>
+          <tr><td>Definir colunas</td><td>Você, pelo protocolo</td><td>Manual de Metodologia</td></tr>
+          <tr><td>Primeiro preenchimento</td><td>Notebook</td><td>Tabela de dados → Sheets</td></tr>
+          <tr><td>Conferência célula a célula</td><td>Você, pelo trecho citado</td><td>Sheets («conferido»)</td></tr>
+          <tr><td>Registro e declaração</td><td>Você</td><td>Método do trabalho; <span class="gterm" tabindex="0" data-t="Declaração de uso de IA" data-d="Trecho do trabalho (método, nota ou seção própria) que informa qual ferramenta de IA foi usada, em que etapa, para quê, e como o resultado foi verificado.">declaração de uso de IA</span></td></tr>
+        </tbody></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide alt" id="s28" data-title="Fluxo D · Preparação de aula ou apresentação">
+  <div class="inner">
+    <div class="kicker-part rv">Fluxos<span>D · aula ou apresentação</span></div>
+    <h2 class="rv">Fluxo D — preparar uma aula ou apresentação a partir de artigos que você já leu</h2>
+    <div class="two rv">
+      <div>
+        <ol>
+          <li>Notebook «Aula · tema» com os textos-base (artigos, capítulos, a norma) e, pelo Drive, as suas anotações.</li>
+          <li>«Mapa mental» para ver a estrutura; decida a sequência da aula a partir dele (e não o contrário).</li>
+          <li>«Apresentação de slides» como esqueleto; troque o texto pelo seu; use figuras das fontes com crédito.</li>
+          <li>«Relatórios» → «Guia de estudo» e «Cartões didáticos» como material de apoio para os alunos — depois de revisar item por item.</li>
+          <li>«Resumo em Áudio» (Brief) em português como pré-aula, se fizer sentido — com o aviso de que foi gerado por IA.</li>
+        </ol>
+        <div class="rule-box"><span class="blabel">Regra</span><p>Material gerado que vai para alunos é <strong>revisado como se fosse seu</strong>, porque é: o nome no slide é o seu. E leva a nota «material de apoio gerado com Gemini Notebook a partir de [fontes], revisado pelo docente».</p></div>
+      </div>
+      <div>
+        <div class="code"><div class="code-head">prompt — roteiro de aula em três blocos</div><pre>A partir das fontes selecionadas, proponha um roteiro de aula de
+[50] minutos em três blocos (conceito, método, aplicação). Para cada
+bloco: objetivo de aprendizagem em uma frase, os dois ou três pontos
+essenciais com a citação da fonte, um exemplo que as fontes tragam
+e uma pergunta para discussão. Não invente exemplos fora das fontes.</pre></div>
+        <div class="tw"><table><thead><tr><th>Formato do Estúdio</th><th>Vira</th><th>Cota que consome</th></tr></thead><tbody>
+          <tr><td>Mapa mental</td><td>Sequência da aula</td><td>Mapas/relatórios/cartões/testes (10/dia no grátis)</td></tr>
+          <tr><td>Apresentação de slides</td><td>Esqueleto dos slides</td><td>Não listada na tabela de limites</td></tr>
+          <tr><td>Guia de estudo · Cartões · Teste</td><td>Material de apoio</td><td>Mesma cota dos mapas</td></tr>
+          <tr><td>Resumo em Áudio (Brief)</td><td>Pré-aula</td><td>3/dia no grátis</td></tr>
+        </tbody></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s29" data-title="Fluxo E · Defesa e banca">
+  <div class="inner">
+    <div class="kicker-part rv">Fluxos<span>E · defesa e banca</span></div>
+    <h2 class="rv">Fluxo E — defesa: as perguntas prováveis a partir da própria tese</h2>
+    <p class="lead rv">Situação: a tese pronta, a banca marcada. O notebook lê o seu texto como um examinador leria — e devolve perguntas com o trecho que as motivou. Você descobre antes da banca onde o argumento está frágil.</p>
+    <div class="two rv">
+      <div>
+        <ol>
+          <li>Notebook «Banca · título» com o PDF da tese, os artigos mais citados no capítulo de discussão e, se houver, artigos dos membros da banca sobre o tema.</li>
+          <li>Selecione só a tese: prompt de perguntas prováveis (ao lado). Salve como nota.</li>
+          <li>Selecione tese + artigos: «Em que pontos a tese diverge destas fontes?» — são as perguntas de contraste.</li>
+          <li>«Resumo em Áudio» → «Critique» sobre a tese, em português: ouça como leitura externa.</li>
+          <li>«Teste» e «Cartões didáticos» para fixar números, definições e o que cada capítulo demonstra.</li>
+          <li>Para cada pergunta, escreva a resposta com a página da tese onde ela está sustentada.</li>
+        </ol>
+      </div>
+      <div>
+        <div class="code"><div class="code-head">prompt — perguntas prováveis da banca</div><pre>Leia a fonte selecionada como um examinador. Liste 20 perguntas que
+uma banca faria, agrupadas em: objetivo e problema; método e
+amostra; resultados e sua interpretação; limitações; contribuição
+e trabalhos futuros. Para cada pergunta, cite o trecho da tese que a
+motivou e diga se o texto já responde a ela (sim, parcialmente, não).</pre></div>
+        <div class="trap"><span class="blabel">Armadilha</span><p><strong>Enviar a tese com dados de pessoas identificáveis.</strong> Se a tese contém nomes, entrevistas não anonimizadas ou dados sob sigilo, use a versão anonimizada, ou não use o serviço para esse capítulo. Detalhes na Parte 7.</p></div>
+        <div class="note"><span class="blabel">Manual de Metodologia</span><p>O roteiro completo de preparação para a banca — o que a banca avalia, como estruturar a apresentação, como responder — está no manual de Metodologia. Aqui entra só a ferramenta que gera as perguntas.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide alt" id="s30" data-title="Fluxo F · Integração com o Zotero e com os agentes">
+  <div class="inner">
+    <div class="kicker-part rv">Fluxos<span>F · Zotero e os agentes dos outros manuais</span></div>
+    <h2 class="rv">Fluxo F — do Zotero para o notebook, e o que cada agente faz</h2>
+    <div class="two rv">
+      <div>
+        <h4>Zotero → Gemini Notebook</h4>
+        <ol>
+          <li>No Zotero, mantenha a renomeação automática ligada: os PDFs se chamam «Autor - Ano - Título.pdf».</li>
+          <li>Selecione os itens da coleção (por exemplo, «2 Incluídos») e arraste os anexos PDF para uma pasta do computador — ou abra a pasta <code>storage/</code> da pasta de dados.</li>
+          <li>No notebook, «Adicionar fontes» → «Enviar arquivos» → selecione os PDFs da pasta.</li>
+          <li>Não há sincronização de volta: o notebook não escreve no Zotero. O que sair da conversa vai para o Zotero à mão — como nota do item, com página.</li>
+        </ol>
+        <div class="rule-box"><span class="blabel">Regra</span><p>A referência que vai para o texto sai do Zotero (estilo do programa), nunca do notebook. O notebook sabe o nome do arquivo; o Zotero sabe autor, ano, periódico, volume, página e DOI.</p></div>
+      </div>
+      <div>
+        <div class="tw"><table><thead><tr><th style="width:130px">Agente</th><th>Manual</th><th>Pergunta que ele responde</th><th>Onde o notebook entra</th></tr></thead><tbody>
+          <tr><td><span class="pill p-blue">Metodólogo</span></td><td>Metodologia</td><td>«Quais colunas a matriz precisa? Qual critério de inclusão?»</td><td>Recebe as colunas; devolve a tabela para conferir</td></tr>
+          <tr><td><span class="pill p-go">Bibliotecário</span></td><td>Zotero</td><td>«Quais itens da coleção têm PDF? Exporte a lista.»</td><td>Recebe os PDFs; devolve fichamentos para as notas dos itens</td></tr>
+          <tr><td><span class="pill p-amber">Orientador</span></td><td>Uso de IA</td><td>«Posso usar o notebook nesta etapa? Como declaro?»</td><td>Define o que pode ser delegado e o texto da declaração</td></tr>
+        </tbody></table></div>
+        <div class="note"><span class="blabel">Não há integração automática</span><p>O Gemini Notebook não tem API pública nem extensão oficial em setembro de 2026; a ponte com o Zotero e com os agentes é feita por arquivos (PDF para dentro; Docs e Sheets para fora). É deliberado neste manual: cada passagem por arquivo é um ponto de conferência.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PARTE 6 ===================== -->
+<section class="slide divider" id="p6" data-title="Parte 6 · Colaborar e compartilhar"><div class="inner"><div class="kicker-part rv">Parte 6<span>Colaborar e compartilhar</span></div><h2 class="rv">Orientador, coautores e outros dispositivos</h2><p class="rv">Leitor e <span class="gterm" tabindex="0" data-t="Leitor · Editor" data-d="Papéis de compartilhamento: o Leitor conversa com as fontes e vê as notas; o Editor também adiciona e remove fontes, notas e materiais do Estúdio.">Editor</span>, o link público, Notebooks no Gemini, o aplicativo e as abas Descobrir e <span class="gterm" tabindex="0" data-t="Coleções" data-d="Aba da página inicial que agrupa notebooks — um agrupamento por projeto ou disciplina.">Coleções</span>.</p></div><div class="num">06</div></section>
+
+<section class="slide" id="s31" data-title="Compartilhar: Leitor, Editor e link público">
+  <div class="inner">
+    <div class="kicker-part rv">Colaborar<span>1 de 2</span></div>
+    <h2 class="rv">«Compartilhar»: Leitor, Editor e o link público</h2>
+    <div class="two rv">
+      <figure><div class="shot"><img src="capturas/gn_19_compartilhar.jpg" width="1920" height="938" alt="Diálogo Compartilhar com o campo de e-mail, os papéis Leitor e Editor e a opção de acesso pelo link"></div><figcaption><b>Figura 27</b> «Compartilhar»: «Adicione pessoas e grupos», a lista «Pessoas com acesso» e «Acesso ao notebook» com três níveis — «Restrito», «Qualquer pessoa com o link» e «Público».</figcaption></figure>
+      <figure><div class="shot"><img src="capturas/gn_19b_compartilhar_opcoes.jpg" width="1920" height="938" alt="Menu de acesso ao notebook com Restrito, Qualquer pessoa com o link e Público"></div><figcaption><b>Figura 28</b> Os três níveis de «Acesso ao notebook».</figcaption></figure>
+      <div>
+        <div class="tw"><table><thead><tr><th style="width:170px">Modo</th><th>Quem acessa</th><th>O que pode fazer</th></tr></thead><tbody>
+          <tr><td><b>Leitor</b> (por e-mail)</td><td>As contas convidadas</td><td>Conversar com as fontes, ver notas e materiais; não altera</td></tr>
+          <tr><td><b>Editor</b> (por e-mail)</td><td>As contas convidadas</td><td>Tudo do Leitor, mais adicionar e remover fontes, notas e materiais</td></tr>
+          <tr><td><b>Qualquer pessoa com o link</b></td><td>Quem tiver o link <em>e</em> uma conta Google</td><td>Como Leitor</td></tr>
+          <tr><td><b>Público</b></td><td>Qualquer pessoa; o notebook pode aparecer em «Descobrir»</td><td>Como Leitor; só em contas pessoais</td></tr>
+          <tr><td><b>Compartilhamento avançado</b></td><td>Só em planos pagos</td><td>Controles adicionais de acesso</td></tr>
+        </tbody></table></div>
+        <ul class="bul">
+          <li>Notebooks públicos e «Notebooks em destaque» existem só em contas pessoais; em Workspace/Education, o administrador decide o alcance.</li>
+          <li>Para o orientador: Leitor basta — ele pergunta ao mesmo corpus e vê as suas notas sem alterá-las.</li>
+          <li class="stop">Não torne público um notebook com PDFs de editoras, capítulos de livros ou dados de pessoas. O link distribui o conteúdo (Parte 7).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide alt" id="s32" data-title="Notebooks no Gemini, aplicativo, Descobrir e Coleções">
+  <div class="inner">
+    <div class="kicker-part rv">Colaborar<span>2 de 2</span></div>
+    <h2 class="rv">Notebooks no Gemini, o aplicativo e as abas «Descobrir» e «Coleções»</h2>
+    <div class="two rv">
+      <figure><div class="shot"><img src="capturas/gn_22_descobrir_aba.jpg" width="1920" height="938" alt="Aba Descobrir da página inicial com notebooks públicos de outras pessoas"></div><figcaption><b>Figura 29</b> «Descobrir»: notebooks públicos de outras pessoas. Abrir um deles é a forma mais rápida de ver como alguém organizou um tema — e de copiar a estrutura, não o conteúdo.</figcaption></figure>
+      <figure><div class="shot"><img src="capturas/gn_22b_criar_colecao.jpg" width="1920" height="938" alt="Diálogo Criar coleção"></div><figcaption><b>Figura 30</b> «Coleções» → «Criar coleção»: nome e os notebooks que entram.</figcaption></figure>
+      <div>
+        <div class="tw"><table><thead><tr><th style="width:190px">Recurso</th><th>O que é</th><th>Limite</th></tr></thead><tbody>
+          <tr><td><b>Notebooks no Gemini</b></td><td>Desde 08/04/2026, os notebooks aparecem dentro do Gemini, sincronizados nos dois sentidos</td><td>Sem Estúdio dentro do Gemini</td></tr>
+          <tr><td><b>Aplicativo</b></td><td>Android 10 ou superior; iOS 17 ou superior. Conversa, fontes, áudio</td><td>Não cria notas</td></tr>
+          <tr><td><b>Google Classroom</b></td><td>Integração desde abril de 2026, em contas Education</td><td>Depende do administrador</td></tr>
+          <tr><td><b>Coleções</b></td><td>Agrupamento de notebooks na página inicial</td><td>Um por projeto ou disciplina</td></tr>
+          <tr><td><b>Copiar</b></td><td>Duplica o notebook (fontes e notas)</td><td>Conta na cota de notebooks</td></tr>
+        </tbody></table></div>
+        <div class="note"><span class="blabel">Quando usar cada lugar</span><p>Computador: tudo — é onde estão o Estúdio e as notas. Gemini: perguntar ao notebook no meio de outra tarefa. Aplicativo: ouvir o áudio e tirar uma dúvida no trajeto. O trabalho de conferência de citações se faz no computador, com o PDF ao lado.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PARTE 7 ===================== -->
+<section class="slide divider" id="p7" data-title="Parte 7 · Limites, privacidade e ética"><div class="inner"><div class="kicker-part rv">Parte 7<span>Limites, privacidade e ética</span></div><h2 class="rv">O que ele não faz, o que ele guarda e o que você declara</h2><p class="rv">Os limites reais da ferramenta, a política de privacidade por tipo de conta, dados sensíveis, a declaração de uso no trabalho e os direitos autorais dos PDFs enviados.</p></div><div class="num">07</div></section>
+
+<section class="slide" id="s33" data-title="O que ele não faz">
+  <div class="inner">
+    <div class="kicker-part rv">Limites e ética<span>1 de 4</span></div>
+    <h2 class="rv">O que o Gemini Notebook não faz — e o que isso muda no seu fluxo</h2>
+    <div class="two rv">
+      <ul class="bul">
+        <li class="stop"><strong>Não busca na web sem você pedir.</strong> A resposta sai só das fontes selecionadas; a web entra apenas pelo Descobrir fontes, que você aprova item a item.</li>
+        <li class="stop"><strong>Não lê o que não conseguiu importar.</strong> URL com paywall, PDF escaneado sem texto, vídeo sem legenda: a fonte aparece na lista e responde vazio.</li>
+        <li class="stop"><strong>Não substitui a leitura.</strong> Ele encontra o trecho; entender o argumento, avaliar o método e decidir o que citar continua sendo trabalho de quem assina.</li>
+        <li class="warn"><strong>Pode errar mesmo com fonte.</strong> O rodapé diz: «O Gemini Notebook pode gerar respostas incorretas. Por isso, cheque o conteúdo.» A citação numerada é o meio de checar, não a prova de que está certo.</li>
+        <li class="warn"><strong>Não cita no formato do trabalho.</strong> O número entre colchetes é um endereço interno; a referência (autor, ano, página, DOI) vem do Zotero.</li>
+        <li class="warn"><strong>Não faz busca sistemática.</strong> Sem string, sem base, sem contagem, sem critério; o Descobrir fontes é exploração.</li>
+        <li><strong>Não guarda versões.</strong> O que se apaga, se apaga; o que importa vai para o Docs, o Sheets e o Zotero.</li>
+      </ul>
+      <div>
+        <div class="tw"><table><thead><tr><th>Se você precisa de…</th><th>Use</th></tr></thead><tbody>
+          <tr><td>Buscar a literatura com método</td><td>Bases (Scopus, Web of Science, SciELO, PubMed) → Zotero</td></tr>
+          <tr><td>Gerenciar referências e citar no texto</td><td>Zotero e o estilo do programa</td></tr>
+          <tr><td>Decidir método, critérios, estrutura</td><td>Manual de Metodologia; o Metodólogo</td></tr>
+          <tr><td>Saber o que pode ser delegado à IA e como declarar</td><td>Manual de uso de IA; o Orientador</td></tr>
+          <tr><td>Ler, comparar e sintetizar um corpus fechado, com o trecho ao alcance</td><td><span class="pill p-go">Gemini Notebook</span></td></tr>
+        </tbody></table></div>
+        <div class="rule-box"><span class="blabel">Regra</span><p>O notebook é a ferramenta da <strong>etapa de leitura e síntese</strong>. Antes dela (busca) e depois dela (citação, escrita) as ferramentas são outras — e a passagem entre elas é por arquivo, com conferência.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide alt" id="s34" data-title="Privacidade por tipo de conta">
+  <div class="inner">
+    <div class="kicker-part rv">Limites e ética<span>2 de 4 · política verificada em 08/09/2026</span></div>
+    <h2 class="rv">Privacidade: o que o Google faz com as suas fontes, por tipo de conta</h2>
+    <div class="two rv">
+      <div class="tw"><table><thead><tr><th style="width:190px">Situação</th><th>Conta pessoal</th><th>Workspace · Education</th></tr></thead><tbody>
+        <tr><td><b>Fontes, perguntas e respostas usadas para treinar modelos</b></td><td>Não</td><td>Não</td></tr>
+        <tr><td><b>Se você envia feedback</b> (polegar, «reportar»)</td><td>O conteúdo relacionado pode passar por revisão humana por equipes treinadas, desvinculado da conta, com retenção de até 3 anos</td><td>Nunca revisado por humanos nem usado para treinar, mesmo com feedback</td></tr>
+        <tr><td><b>Desligar a «Atividade» no aplicativo Gemini</b></td><td colspan="2">Não apaga os dados do Gemini Notebook; o notebook se apaga no próprio serviço</td></tr>
+        <tr><td><b>Notebooks públicos e em destaque</b></td><td>Disponíveis</td><td>Não disponíveis; alcance definido pelo administrador</td></tr>
+      </tbody></table></div>
+      <div>
+        <ul class="bul">
+          <li>Regra prática: <strong>não envie feedback</strong> em conversas que contenham dados de pesquisa; é o único caminho pelo qual o conteúdo chega a uma pessoa.</li>
+          <li>Prefira a conta institucional quando a instituição a oferece: a política é mais restritiva por padrão.</li>
+          <li>Um notebook compartilhado é visível para todos os convidados, inclusive as notas — e quem tem o link público pode copiar as fontes.</li>
+          <li class="warn">Apagar o histórico da conversa apaga a conversa, não as fontes; apagar o notebook apaga tudo.</li>
+        </ul>
+        <div class="note"><span class="blabel">Fonte</span><p>Política de privacidade do Gemini Notebook na ajuda oficial (referência 14). Políticas mudam: releia a página antes de enviar dados de projetos com comitê de ética.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s35" data-title="Dados sensíveis: o que universidades orientam">
+  <div class="inner">
+    <div class="kicker-part rv">Limites e ética<span>3 de 4</span></div>
+    <h2 class="rv">Dados sensíveis: o que as universidades orientam antes de você enviar</h2>
+    <p class="lead rv">Universidades que avaliaram o serviço convergem num ponto: a política do Google é boa para leitura de literatura publicada e insuficiente, por si só, para dados de pesquisa com pessoas. As orientações abaixo estão nas referências.</p>
+    <div class="two rv">
+      <div class="tw"><table><thead><tr><th style="width:170px">Instituição</th><th>Orientação, em resumo</th></tr></thead><tbody>
+        <tr><td><b>Stanford (UIT)</b></td><td>Só dados de risco baixo ou moderado; «trate as conversas como públicas»</td></tr>
+        <tr><td><b>Unicamp (Portal de IA)</b></td><td>Página institucional sobre o serviço, com orientações de uso para a comunidade</td></tr>
+        <tr><td><b>Universidade de Michigan (KB)</b></td><td>Artigo de base de conhecimento sobre o uso do Gemini Notebook na conta institucional</td></tr>
+        <tr><td><b>Universidade de Chicago (Academic Technology)</b></td><td>Avaliação do serviço como ferramenta de pesquisa e estudo (abril de 2026)</td></tr>
+        <tr><td><b>Universidade de North Dakota (LibGuide)</b></td><td>Guia de biblioteca sobre o serviço (setembro de 2026)</td></tr>
+      </tbody></table></div>
+      <div>
+        <div class="dec">
+          <div class="m"><b>Pode enviar</b><ul><li>Artigos, capítulos, normas, relatórios públicos</li><li>A sua tese e os seus rascunhos</li><li>Transcrições anonimizadas</li></ul></div>
+          <div class="p"><b>Só com cuidado</b><ul><li>Dados de instituições parceiras sob acordo</li><li>Manuscritos de terceiros em avaliação</li><li>Material sob embargo</li></ul></div>
+          <div class="h"><b>Não envie</b><ul><li>Dados identificáveis de participantes</li><li>Prontuários, registros escolares, dados de menores</li><li>O que o <span class="gterm" tabindex="0" data-t="TCLE" data-d="Termo de Consentimento Livre e Esclarecido: documento em que o participante autoriza o uso dos seus dados nos limites descritos; define o que pode ou não ser enviado a um serviço externo.">TCLE</span> ou o comitê de ética não autorizou</li></ul></div>
+        </div>
+        <div class="rule-box"><span class="blabel">Regra</span><p>Se a pergunta «posso enviar isto?» não tem resposta óbvia, a resposta é a do <strong>comitê de ética e do termo de consentimento</strong> do seu projeto — não a da política do Google. Anonimize antes, ou não envie.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide alt" id="s36" data-title="Declarar o uso e respeitar os direitos autorais">
+  <div class="inner">
+    <div class="kicker-part rv">Limites e ética<span>4 de 4</span></div>
+    <h2 class="rv">Declarar o uso no trabalho — e respeitar os direitos autorais dos PDFs enviados</h2>
+    <div class="two rv">
+      <div>
+        <h4>Declaração de uso de IA</h4>
+        <ul class="bul">
+          <li>O uso do notebook na leitura, triagem e síntese é uso de IA e entra na <span class="gterm" tabindex="0" data-t="Declaração de uso de IA" data-d="Trecho do trabalho (método, nota ou seção própria) que informa qual ferramenta de IA foi usada, em que etapa, para quê, e como o resultado foi verificado.">declaração de uso de IA</span> do trabalho: ferramenta, etapa, finalidade, forma de verificação.</li>
+          <li>O que se cita no texto é sempre o artigo; não se cita «o notebook disse». Quando um conteúdo gerado por IA precisa ser citado como tal, a biblioteca da Purdue mantém orientações para APA, MLA e Chicago (referência 23).</li>
+          <li>O modelo de declaração e a decisão sobre o que pode ser delegado em cada etapa estão no manual de uso de IA; o agente Orientador redige o texto com você.</li>
+        </ul>
+        <div class="code"><div class="code-head">declaração — modelo mínimo (adapte ao programa)</div><pre>Na etapa de leitura e síntese da literatura, utilizou-se o Gemini
+Notebook (Google) para localizar trechos e organizar uma matriz de
+extração a partir dos [n] estudos incluídos. Todas as informações
+extraídas foram conferidas nos textos originais pelo(a) autor(a).
+A ferramenta não foi usada para buscar literatura, decidir critérios
+de inclusão nem redigir o texto.</pre></div>
+      </div>
+      <div>
+        <h4>Direitos autorais dos PDFs enviados</h4>
+        <div class="tw"><table><thead><tr><th>Situação</th><th>Avaliação</th></tr></thead><tbody>
+          <tr><td>Enviar ao seu notebook o PDF que a universidade assina, para leitura própria</td><td><span class="pill p-go">uso pessoal</span></td></tr>
+          <tr><td>Compartilhar como Leitor com o orientador que tem o mesmo acesso institucional</td><td><span class="pill p-amber">conferir a licença da instituição</span></td></tr>
+          <tr><td>Notebook público («qualquer pessoa com o link») com PDFs pagos ou capítulos de livro</td><td><span class="pill p-stop">redistribuição — não faça</span></td></tr>
+          <tr><td>Artigos em acesso aberto (CC BY e similares), normas públicas, legislação</td><td><span class="pill p-go">pode compartilhar, com o crédito</span></td></tr>
+        </tbody></table></div>
+        <div class="trap"><span class="blabel">Armadilha</span><p><strong>O link «só para a turma».</strong> Um notebook com o link ativo é um repositório de PDFs acessível a qualquer conta Google que o receba. Para material pago, cada pessoa envia o próprio PDF ao próprio notebook — ou usa a cópia da instituição pelo Drive, dentro da política dela.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PARTE 8 ===================== -->
+<section class="slide divider" id="p8" data-title="Parte 8 · Fechamento"><div class="inner"><div class="kicker-part rv">Parte 8<span>Fechamento</span></div><h2 class="rv">Erros comuns, checklist, glossário e referências</h2><p class="rv">O que costuma dar errado e como corrigir, a lista para conferir antes de usar em pesquisa, os termos, as fontes deste manual, o repositório — e como usar os manuais juntos.</p></div><div class="num">08</div></section>
+
+<section class="slide" id="s37" data-title="Erros comuns">
+  <div class="inner">
+    <div class="kicker-part rv">Fechamento<span>1 de 6</span></div>
+    <h2 class="rv">Erros comuns — como aparecem e como corrigir</h2>
+    <div class="tw rv"><table><thead><tr><th>Erro</th><th>Como aparece</th><th>Causa</th><th style="width:220px">Correção</th></tr></thead><tbody>
+      <tr><td>URL da editora como fonte</td><td>Resposta rasa; o guia da fonte mostra só o resumo, ou «Informações do erro»</td><td>Paywall: o serviço só vê o que a página mostra sem login</td><td><span class="pill p-blue">enviar o PDF do Zotero</span></td></tr>
+      <tr><td>PDF escaneado</td><td>Fonte na lista, resposta «não há informação nas fontes»</td><td>Sem camada de texto</td><td><span class="pill p-blue">passar <span class="gterm" tabindex="0" data-t="OCR" data-d="Reconhecimento óptico de caracteres: converte a imagem de um PDF escaneado em texto pesquisável; sem ele, o PDF entra vazio.">OCR</span>; reenviar</span></td></tr>
+      <tr><td>Fontes erradas marcadas</td><td>Síntese «da literatura» com duas fontes; artigo central ignorado</td><td>Caixas de seleção desmarcadas de uma pergunta anterior</td><td><span class="pill p-blue">conferir a seleção antes de perguntar</span></td></tr>
+      <tr><td>Citação certa, frase errada</td><td>O número existe, mas o trecho não diz o que a resposta afirma</td><td>Generalização ou mistura de fontes pelo modelo</td><td><span class="pill p-stop">abrir o trecho; reescrever pelo original</span></td></tr>
+      <tr><td>Afirmação sem número</td><td>Frase fluente no meio da resposta, sem citação</td><td>Completada com conhecimento do modelo</td><td><span class="pill p-stop">tratar como conjectura; perguntar «onde está nas fontes?»</span></td></tr>
+      <tr><td>Nome de arquivo como referência</td><td>«Segundo artigo_final_v3.pdf…»</td><td>A citação do notebook é o nome da fonte</td><td><span class="pill p-blue">referência pelo Zotero; renomear antes de enviar</span></td></tr>
+      <tr><td>Notebook único com tudo</td><td>Respostas genéricas; limite de fontes atingido</td><td>Corpus grande e heterogêneo</td><td><span class="pill p-blue">um notebook por pergunta; rotular por tema</span></td></tr>
+      <tr><td>Matriz gerada e não conferida</td><td>Célula com «n = 120» onde o artigo diz 12</td><td>Erro de extração numa tabela longa</td><td><span class="pill p-stop">conferir célula a célula; pedir em lotes</span></td></tr>
+      <tr><td>Descobrir fontes como busca</td><td>Revisão com blogs e páginas de editora; sem contagem</td><td>Exploração usada como método</td><td><span class="pill p-amber">busca nas bases; Descobrir só para exploração</span></td></tr>
+      <tr><td>Notas só na conversa</td><td>Histórico apagado; trabalho perdido</td><td>Nada foi salvo como nota nem exportado</td><td><span class="pill p-amber">Salvar como nota; exportar para o Docs</span></td></tr>
+      <tr><td>Link público com PDFs pagos</td><td>Notebook «da turma» distribui artigos de editora</td><td>Compartilhamento sem pensar na licença</td><td><span class="pill p-stop">desativar o link; cada um envia o próprio PDF</span></td></tr>
+      <tr><td>Cota esgotada no meio do trabalho</td><td>Aviso de limite ao gerar áudio ou relatório</td><td>3 áudios e 10 relatórios por dia no grátis</td><td><span class="pill p-amber">planejar as gerações; conversar em vez de gerar</span></td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<section class="slide alt" id="s38" data-title="Checklist antes de usar em pesquisa">
+  <div class="inner">
+    <div class="kicker-part rv">Fechamento<span>2 de 6</span></div>
+    <h2 class="rv">Checklist: antes de usar o notebook numa etapa da pesquisa</h2>
+    <p class="lead rv">Marque conforme concluir. O estado fica salvo neste navegador — não é compartilhado nem enviado a lugar nenhum.</p>
+    <div class="check rv" id="checklist">
+      <div class="check-item"><input type="checkbox" id="c01"><label for="c01"><b>Conta</b>Decidido entre conta pessoal e institucional, sabendo a diferença de privacidade; «Criar novo» disponível</label></div>
+      <div class="check-item"><input type="checkbox" id="c02"><label for="c02"><b>Notebook</b>Um notebook por pergunta de pesquisa ou capítulo, com nome «Projeto · tema · ano»; Coleção do projeto criada</label></div>
+      <div class="check-item"><input type="checkbox" id="c03"><label for="c03"><b>Personalizar</b>«Personalizar notebook» com idioma, «não informado nas fontes» e citação obrigatória; estilo de conversa escolhido</label></div>
+      <div class="check-item"><input type="checkbox" id="c04"><label for="c04"><b>Fontes</b>PDFs nomeados «Autor - Ano - Título» (renomeação do Zotero); nenhuma URL de editora; nenhum PDF escaneado sem OCR</label></div>
+      <div class="check-item"><input type="checkbox" id="c05"><label for="c05"><b>Ingestão</b>Pergunta de inventário rodada; guia de cada fonte aberto; fontes vazias corrigidas ou removidas</label></div>
+      <div class="check-item"><input type="checkbox" id="c06"><label for="c06"><b>Seleção</b>Caixas de seleção conferidas antes de cada pergunta que vai para o texto; rótulos por tema se houver mais de 20 fontes</label></div>
+      <div class="check-item"><input type="checkbox" id="c07"><label for="c07"><b>Prompts</b>Todo prompt com escopo, formato e o que fazer na falta; prompts do fluxo salvos como nota</label></div>
+      <div class="check-item"><input type="checkbox" id="c08"><label for="c08"><b>Citações</b>Trecho aberto e lido para cada afirmação usada; página anotada; frases sem número descartadas</label></div>
+      <div class="check-item"><input type="checkbox" id="c09"><label for="c09"><b>Notas</b>Só o conferido salvo como nota; notas nomeadas por tipo e tema; exportadas para o Docs ao fechar a etapa</label></div>
+      <div class="check-item"><input type="checkbox" id="c10"><label for="c10"><b>Matriz</b>Colunas definidas pelo protocolo; primeira versão pelo notebook; cada célula conferida na planilha</label></div>
+      <div class="check-item"><input type="checkbox" id="c11"><label for="c11"><b>Estúdio</b>Cotas do dia planejadas; nenhum material do Estúdio citado no texto; material para alunos revisado item a item</label></div>
+      <div class="check-item"><input type="checkbox" id="c12"><label for="c12"><b>Dados sensíveis</b>Nada identificável enviado; transcrições anonimizadas; <span class="gterm" tabindex="0" data-t="TCLE" data-d="Termo de Consentimento Livre e Esclarecido: documento em que o participante autoriza o uso dos seus dados nos limites descritos; define o que pode ou não ser enviado a um serviço externo.">TCLE</span> e comitê de ética consultados quando há dúvida; feedback desativado nessas conversas</label></div>
+      <div class="check-item"><input type="checkbox" id="c13"><label for="c13"><b>Compartilhar</b>Orientador como Leitor; link público desativado em notebooks com PDFs pagos ou dados</label></div>
+      <div class="check-item"><input type="checkbox" id="c14"><label for="c14"><b>Declarar</b>Declaração de uso de IA escrita com ferramenta, etapa, finalidade e verificação; referências pelo Zotero</label></div>
+      <div class="check-foot"><span id="check-status">0 de 14</span><button type="button" id="check-reset">limpar</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s39" data-title="Glossário">
+  <div class="inner">
+    <div class="kicker-part rv">Fechamento<span>3 de 6</span></div>
+    <h2 class="rv">Glossário</h2>
+    <p class="lead rv">Tudo que aparece no manual sem ser explicado no próprio slide. Termos sublinhados no texto abrem estas definições.</p>
+    <div class="gl4 rv"><div><h4 style="margin-top:0">Conceitos e a ferramenta</h4><dl class="gl"><dt>Gemini Notebook</dt><dd>Serviço do Google para conversar com um conjunto de fontes escolhidas pelo usuário; antes chamado NotebookLM, renomeado em 16/07/2026.</dd><dt>Notebook</dt><dd>A unidade de trabalho: um conjunto de fontes, a conversa sobre elas, as notas e o que o Estúdio gerou. Um por projeto ou pergunta de pesquisa.</dd><dt>Fonte</dt><dd>Cada documento enviado ao notebook (PDF, site, vídeo, arquivo do Drive, texto colado); é o único material de que a resposta pode sair.</dd><dt>RAG</dt><dd>Retrieval-Augmented Generation, geração aumentada por recuperação: o modelo recebe, junto com a pergunta, os trechos relevantes das suas fontes e responde a partir deles.</dd><dt>LLM</dt><dd>Large Language Model, grande modelo de linguagem: o modelo que gera as respostas (no Gemini Notebook, o Gemini 3.5).</dd><dt>Alucinação</dt><dd>Resposta fluente e plausível que não corresponde a nenhuma fonte real — inclusive referências inexistentes.</dd><dt>Token</dt><dd>Unidade em que o modelo conta texto; grosso modo, três quartos de uma palavra em português.</dd><dt>Prompt</dt><dd>O texto que você escreve na caixa de pergunta; quanto mais explícito sobre formato, escopo e o que fazer quando a informação não existe, melhor a resposta.</dd><dt>Citação numerada</dt><dd>Número entre colchetes na resposta que leva ao trecho exato da fonte de onde a afirmação saiu.</dd><dt>Guia de fonte</dt><dd>Tela de uma fonte com resumo, tópicos-chave e o texto que de fato foi ingerido.</dd><dt>Nota</dt><dd>Texto guardado no notebook, escrito por você ou salvo de uma resposta; até 1.000 por notebook; exportável para o Google Docs. Não pode ser criada no aplicativo móvel.</dd><dt>Estúdio</dt><dd>Painel direito do notebook: gera Resumo em Áudio, Resumo em Vídeo, Mapa mental, Relatórios, Cartões didáticos, Teste, Infográfico, Apresentação de slides e Tabela de dados a partir das fontes selecionadas.</dd><dt>Resumo em Áudio</dt><dd>Conversa gerada entre duas vozes sobre as fontes; formatos Deep Dive, Brief, Critique e Debate; modo interativo «Participar»; 80 idiomas ou mais.</dd><dt>Resumo em Vídeo</dt><dd>Vídeo narrado gerado a partir das fontes; formatos Explicativo, Curto e Cinematográfico (só em inglês).</dd><dt>Tabela de dados</dt><dd>Formato do Estúdio que extrai das fontes uma tabela estruturada — uma linha por fonte ou por item — exportável para o Google Sheets.</dd><dt>Antigravity</dt><dd>Recurso anunciado em 08/06/2026: um computador em nuvem que executa código dentro do notebook e gera PDF, XLSX, PPTX, PNG, SVG, MD, JSON e CSV. Primeiro para Ultra e Workspace Expanded Access.</dd></dl></div><div><h4 style="margin-top:0">Fontes, contas e pesquisa</h4><dl class="gl"><dt>Pesquisa rápida</dt><dd>Modo do Descobrir fontes que busca na web (ou no seu Drive) um conjunto pequeno de páginas relacionadas ao tema digitado.</dd><dt>Deep Research</dt><dd>Modo do Descobrir fontes que percorre centenas de sites, monta um relatório com as fontes encontradas e permite adicioná-las ao notebook. Indisponível para menores de 18.</dd><dt>Paywall</dt><dd>Barreira de assinatura de uma editora: a página mostra só o resumo; o texto completo exige login ou pagamento.</dd><dt>OCR</dt><dd>Reconhecimento óptico de caracteres: converte a imagem de um PDF escaneado em texto pesquisável; sem ele, o PDF entra vazio.</dd><dt>Sincronização do Drive</dt><dd>Desde 26/05/2026, Google Docs, Slides e Sheets adicionados pelo botão «Drive» são atualizados automaticamente no notebook.</dd><dt>Leitor · Editor</dt><dd>Papéis de compartilhamento: o Leitor conversa com as fontes e vê as notas; o Editor também adiciona e remove fontes, notas e materiais do Estúdio.</dd><dt>Conta pessoal</dt><dd>Conta Google individual (gmail.com ou domínio próprio sem Workspace); tem acesso a notebooks públicos e Notebooks em destaque, e política de privacidade própria.</dd><dt>Workspace · Education</dt><dd>Contas Google administradas por uma organização ou instituição de ensino; no Gemini Notebook, o conteúdo nunca é revisado por humanos nem usado para treinar modelos, mesmo com feedback.</dd><dt>Notebooks no Gemini</dt><dd>Desde 08/04/2026, os notebooks aparecem dentro do aplicativo Gemini, sincronizados nos dois sentidos; o Estúdio não está disponível ali.</dd><dt>Coleções</dt><dd>Aba da página inicial que agrupa notebooks — um agrupamento por projeto ou disciplina.</dd><dt>Feedback</dt><dd>Polegar para cima ou para baixo e «reportar» numa resposta; em conta pessoal, é o único caminho pelo qual o conteúdo pode passar por revisão humana (retenção de até 3 anos).</dd><dt>Matriz de síntese</dt><dd>Tabela em que cada linha é um estudo e cada coluna uma pergunta da revisão (objetivo, método, amostra, resultado, limitação).</dd><dt>IMRaD</dt><dd>Estrutura padrão do artigo científico: Introdução, Métodos, Resultados e Discussão (Introduction, Methods, Results and Discussion).</dd><dt>Declaração de uso de IA</dt><dd>Trecho do trabalho (método, nota ou seção própria) que informa qual ferramenta de IA foi usada, em que etapa, para quê, e como o resultado foi verificado.</dd><dt>Direitos autorais</dt><dd>O PDF de um artigo de editora ou de um capítulo de livro é licenciado para o seu uso pessoal (pela assinatura da instituição ou pela compra); enviá-lo a um serviço para leitura própria é uso pessoal; redistribuí-lo por um notebook compartilhado ou público não é.</dd><dt>TCLE</dt><dd>Termo de Consentimento Livre e Esclarecido: documento em que o participante autoriza o uso dos seus dados nos limites descritos; define o que pode ou não ser enviado a um serviço externo.</dd></dl></div></div>
+  </div>
+</section>
+
+<section class="slide alt" id="s40" data-title="Referências: ajuda oficial do Gemini Notebook">
+  <div class="inner">
+    <div class="kicker-part rv">Fechamento<span>4 de 6 · endereços conferidos em 08/09/2026</span></div>
+    <h2 class="rv">Referências — ajuda oficial do Gemini Notebook</h2>
+    <ol class="refs rv">
+      <li><span class="rt">GOOGLE. Ajuda do Gemini Notebook (página inicial).</span><a href="https://support.google.com/gemininotebook">support.google.com/gemininotebook</a></li>
+      <li><span class="rt">GOOGLE. Aplicativo do Gemini Notebook para Android e iOS.</span><a href="https://support.google.com/gemininotebook/answer/16296687">support.google.com/gemininotebook/answer/16296687</a></li>
+      <li><span class="rt">GOOGLE. Notas: criar, salvar e exportar para o Google Docs e Sheets.</span><a href="https://support.google.com/gemininotebook/answer/16262519">support.google.com/gemininotebook/answer/16262519</a></li>
+      <li><span class="rt">GOOGLE. Fontes: tipos aceitos, limites por fonte e Descobrir fontes (<span class="gterm" tabindex="0" data-t="Pesquisa rápida" data-d="Modo do Descobrir fontes que busca na web (ou no seu Drive) um conjunto pequeno de páginas relacionadas ao tema digitado.">Pesquisa rápida</span> e Deep Research).</span><a href="https://support.google.com/gemininotebook/answer/16215270">support.google.com/gemininotebook/answer/16215270</a></li>
+      <li><span class="rt">GOOGLE. Perguntas frequentes.</span><a href="https://support.google.com/gemininotebook/answer/16269187">support.google.com/gemininotebook/answer/16269187</a></li>
+      <li><span class="rt">GOOGLE. Limites de uso por plano (Grátis, AI Plus, AI Pro, Ultra).</span><a href="https://support.google.com/gemininotebook/answer/16213268">support.google.com/gemininotebook/answer/16213268</a></li>
+      <li><span class="rt">GOOGLE. Limites em contas Google Workspace e Education.</span><a href="https://support.google.com/gemininotebook/answer/16337734">support.google.com/gemininotebook/answer/16337734</a></li>
+      <li><span class="rt">GOOGLE. Cotas de uso (página com regime de renovação a cada 5 horas).</span><a href="https://support.google.com/gemininotebook/answer/17670842">support.google.com/gemininotebook/answer/17670842</a></li>
+      <li><span class="rt">GOOGLE. Conversa: citações, estilo, tamanho da resposta e histórico.</span><a href="https://support.google.com/gemininotebook/answer/16179559">support.google.com/gemininotebook/answer/16179559</a></li>
+      <li><span class="rt">GOOGLE. Resumo em Áudio (Audio Overview).</span><a href="https://support.google.com/gemininotebook/answer/16212820">support.google.com/gemininotebook/answer/16212820</a></li>
+      <li><span class="rt">GOOGLE. Resumo em Vídeo (Video Overview).</span><a href="https://support.google.com/gemininotebook/answer/16454555">support.google.com/gemininotebook/answer/16454555</a></li>
+      <li><span class="rt">GOOGLE. Mapa mental.</span><a href="https://support.google.com/gemininotebook/answer/16212283">support.google.com/gemininotebook/answer/16212283</a></li>
+      <li><span class="rt">GOOGLE. Relatórios (FAQ, guia de estudo, documento de briefing).</span><a href="https://support.google.com/gemininotebook/answer/16206563">support.google.com/gemininotebook/answer/16206563</a></li>
+      <li><span class="rt">GOOGLE. Privacidade no Gemini Notebook.</span><a href="https://support.google.com/gemininotebook/answer/17004255">support.google.com/gemininotebook/answer/17004255</a></li>
+      <li><span class="rt">GOOGLE. Infográfico; Apresentação de slides.</span><a href="https://support.google.com/gemininotebook/answer/16758265">…/answer/16758265</a> · <a href="https://support.google.com/gemininotebook/answer/16757456">…/answer/16757456</a></li>
+      <li><span class="rt">GOOGLE. Compartilhar notebooks (Leitor, Editor, link público, notebooks públicos).</span><a href="https://support.google.com/gemininotebook/answer/16322204">support.google.com/gemininotebook/answer/16322204</a></li>
+      <li><span class="rt">GOOGLE. Notebooks no Gemini.</span><a href="https://support.google.com/gemininotebook/answer/17003757">support.google.com/gemininotebook/answer/17003757</a></li>
+      <li><span class="rt">GOOGLE. Disponibilidade: idade mínima, países e idiomas.</span><a href="https://support.google.com/gemininotebook/answer/16164461?hl=pt-BR">support.google.com/gemininotebook/answer/16164461</a></li>
+    </ol>
+  </div>
+</section>
+
+<section class="slide" id="s41" data-title="Referências: anúncios, orientações acadêmicas e repositório">
+  <div class="inner">
+    <div class="kicker-part rv">Fechamento<span>5 de 6</span></div>
+    <h2 class="rv">Referências — anúncios oficiais, orientações de universidades e repositório público</h2>
+    <div class="two rv">
+      <div>
+        <ol class="refs" start="19">
+          <li><span class="rt">GOOGLE. NotebookLM is now Gemini Notebook (blog, 16 jul. 2026).</span><a href="https://blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook/">blog.google/innovation-and-ai/products/gemini-notebook/notebooklm-gemini-notebook</a> · <a href="https://workspaceupdates.googleblog.com/2026/07/notebooklm-now-gemini-notebook.html">workspaceupdates.googleblog.com/2026/07/notebooklm-now-gemini-notebook.html</a></li>
+          <li><span class="rt">GOOGLE. Better research in NotebookLM — Gemini 3.5 e <span class="gterm" tabindex="0" data-t="Antigravity" data-d="Recurso anunciado em 08/06/2026: um computador em nuvem que executa código dentro do notebook e gera PDF, XLSX, PPTX, PNG, SVG, MD, JSON e CSV. Primeiro para Ultra e Workspace Expanded Access.">Antigravity</span> (blog, 8 jun. 2026).</span><a href="https://blog.google/innovation-and-ai/products/notebooklm/better-research-notebooklm/">blog.google/innovation-and-ai/products/notebooklm/better-research-notebooklm</a></li>
+          <li><span class="rt">STANFORD UNIVERSITY IT. NotebookLM — orientações de uso e classificação de risco dos dados.</span><a href="https://uit.stanford.edu/service/gsuite/notebooklm">uit.stanford.edu/service/gsuite/notebooklm</a></li>
+          <li><span class="rt">UNIVERSITY OF CHICAGO. Academic Technology. Google NotebookLM: an AI tool for research and studying (6 abr. 2026).</span><a href="https://academictech.uchicago.edu/2026/04/06/google-notebooklm-an-ai-tool-for-research-and-studying/">academictech.uchicago.edu/2026/04/06/google-notebooklm-an-ai-tool-for-research-and-studying</a></li>
+          <li><span class="rt">PURDUE UNIVERSITY LIBRARIES. Citing AI-generated content (APA, MLA, Chicago).</span><a href="https://guides.lib.purdue.edu/c.php?g=1371380&amp;p=10135074">guides.lib.purdue.edu/c.php?g=1371380&amp;p=10135074</a></li>
+          <li><span class="rt">UNIVERSITY OF NORTH DAKOTA. LibGuide AI resources: NotebookLM (1 set. 2026).</span><a href="https://libguides.und.edu/ai-resources/notebooklm">libguides.und.edu/ai-resources/notebooklm</a></li>
+          <li><span class="rt">UNICAMP. Portal de Inteligência Artificial: NotebookLM.</span><a href="https://inteligenciaartificial.unicamp.br/ferramentas-servicos-ia/notebooklm/">inteligenciaartificial.unicamp.br/ferramentas-servicos-ia/notebooklm</a></li>
+          <li><span class="rt">UNIVERSITY OF MICHIGAN. ITS Knowledge Base: Google — Using Gemini Notebook.</span><a href="https://teamdynamix.umich.edu/TDClient/30/Portal/KB/Article/13790/Google-Using-Gemini-Notebook">teamdynamix.umich.edu/TDClient/30/Portal/KB/Article/13790</a></li>
+        </ol>
+      </div>
+      <div>
+        <div class="case"><span class="blabel">Manual on-line e repositório público</span><p><strong>Manual:</strong> <a href="https://manual.mirandastech.com.br/gemini-notebook/">manual.mirandastech.com.br/gemini-notebook</a> · <a href="https://manual.mirandastech.com.br/gemini-notebook/manual.pdf">PDF</a><br>Deck (HTML autônomo e PDF), capturas datadas de cada tela, os prompts dos seis fluxos em arquivos de texto, o modelo de matriz de síntese em planilha e o modelo de declaração de uso: <a href="https://github.com/joaopaulomirandamatias/gemini-notebook-pesquisa-cientifica">github.com/joaopaulomirandamatias/gemini-notebook-pesquisa-cientifica</a>.</p><span class="src">Como citar: MIRANDASTECH. Gemini Notebook para pesquisa científica: passo a passo. v1.0 (rascunho), set. 2026. CC BY 4.0.</span></div>
+        <div class="tw" style="margin-top:12px"><table><thead><tr><th>Pasta / arquivo</th><th>O que é</th></tr></thead><tbody>
+          <tr><td class="mono">manual/ · capturas/</td><td>Deck em HTML autônomo e PDF; capturas reais e datadas, nomeadas por passo (<code>gn_01</code> a <code>gn_25</code>)</td></tr>
+          <tr><td class="mono">prompts/</td><td>Os prompts dos fluxos A a F e a instrução de «Personalizar notebook», em texto simples</td></tr>
+          <tr><td class="mono">modelos/</td><td>Matriz de síntese (planilha com colunas «conferido» e «corrigido»); modelo de declaração de uso de IA; convenção de nomes de notebooks e fontes</td></tr>
+        </tbody></table></div>
+        <div class="colophon" style="margin-top:12px;font-size:11px">Rascunho escrito com assistência de IA (Claude, Anthropic) na estruturação, redação e verificação de fontes, sob as regras do manual de uso de IA. Nome do serviço, limites por plano, tipos de fonte, formatos do Estúdio, política de privacidade e nomes de interface conferidos nas fontes acima e na interface em português em 08/09/2026. Capturas a substituir pelas reais antes da publicação.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide alt" id="s99" data-title="Como usar os manuais juntos">
+  <div class="inner">
+    <div class="kicker-part rv">Fechamento · último slide<span>método + uso de IA + referências + leitura, na mesma pasta</span></div>
+    <h2 class="rv">Como usar os manuais juntos</h2>
+    <p class="lead rv">Os manuais de <strong>Metodologia</strong>, de <strong>Uso de IA</strong> e de <strong>Zotero</strong> têm agentes para o Claude Code — o <em>Metodólogo</em> decide sobre método; o <em>Orientador</em>, sobre o uso de IA; o <em>Bibliotecário</em>, sobre a biblioteca de referências. Este manual entra como a camada de <strong>leitura e síntese</strong>: é no Gemini Notebook que o corpus fechado pelo Zotero é lido com o trecho ao alcance, e de onde saem a matriz e as notas que voltam para o Zotero e para o texto.</p>
+    <div class="two rv">
+      <div>
+        <div class="tw"><table><thead><tr><th>Pergunta</th><th>Quem responde</th></tr></thead><tbody>
+          <tr><td>«Qual método? Quais colunas? Qual critério de inclusão?»</td><td><span class="pill p-blue">Metodólogo</span> · <a href="https://metodologia.mirandastech.com.br/">metodologia.mirandastech.com.br</a></td></tr>
+          <tr><td>«Posso usar IA nisto? Como declaro?»</td><td><span class="pill p-amber">Orientador</span> · <a href="https://manual.mirandastech.com.br/">manual.mirandastech.com.br</a></td></tr>
+          <tr><td>«Onde está o PDF? Por que a referência saiu errada?»</td><td><span class="pill p-go">Bibliotecário</span> · <a href="https://manual.mirandastech.com.br/zotero/">manual.mirandastech.com.br/zotero</a></td></tr>
+          <tr><td>«Onde clico para perguntar às fontes? Como confiro o trecho?»</td><td><span class="pill p-go">este manual</span> · <a href="https://manual.mirandastech.com.br/gemini-notebook/">manual.mirandastech.com.br/gemini-notebook</a></td></tr>
+        </tbody></table></div>
+        <div class="rule-box"><span class="blabel">Regra dos quatro</span><p>Decidir (Metodologia), delegar (IA), registrar (Zotero) e ler com o trecho ao alcance (Gemini Notebook) são quatro ações distintas sobre a mesma etapa. Nenhum manual substitui o outro; a passagem entre eles é sempre por arquivo, com conferência.</p></div>
+      </div>
+      <div>
+        <div class="tw"><table><thead><tr><th style="width:120px">Etapa</th><th>Metodologia decide</th><th>IA delega ou não</th><th>Zotero registra</th><th>Gemini Notebook faz</th></tr></thead><tbody>
+          <tr><td><b>Busca</b></td><td>Bases, string, critérios</td><td>Sugestão de termos, com registro</td><td>Coleção por base e data; total</td><td>Nada (Descobrir só para exploração)</td></tr>
+          <tr><td><b>Triagem</b></td><td>Critérios; dois revisores</td><td>Triagem assistida, status preliminar</td><td>Etiquetas por revisor; RIS</td><td>Tabela de dados dos PDFs; decisão fica com você</td></tr>
+          <tr><td><b>Leitura</b></td><td>Fichamento com página; matriz</td><td>Resumo de apoio, nunca substituto</td><td>Anotações; notas com página</td><td>Perguntas por seção; citações conferidas; matriz para o Sheets</td></tr>
+          <tr><td><b>Escrita</b></td><td>Normas e estrutura</td><td>Revisão de forma; declaração</td><td>Citações vivas; lista gerada</td><td>Nada no texto; notas exportadas como apoio</td></tr>
+          <tr><td><b>Defesa</b></td><td>Roteiro da banca</td><td>Simulação com registro</td><td>Versão congelada da biblioteca</td><td>Perguntas prováveis; «Critique»; teste</td></tr>
+        </tbody></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<script>
+
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var tot = slides.length; document.getElementById('tot').textContent = tot; var ns = document.getElementById('nslides'); if (ns) ns.textContent = tot;
+  var cur = document.getElementById('cur'), prog = document.getElementById('prog');
+  var menu = document.getElementById('menu'), scrim = document.getElementById('scrim'), menubtn = document.getElementById('menubtn');
+
+  /* sumário gerado a partir dos slides */
+  var html = '', grp = '';
+  slides.forEach(function(s, i){
+    var t = s.getAttribute('data-title') || ('Slide ' + (i+1));
+    if (s.classList.contains('divider')) { html += '<div class="grp">' + t + '</div>'; return; }
+    if (s.classList.contains('cover')) { html += '<div class="grp">Início</div>'; }
+    html += '<a href="#' + s.id + '" data-i="' + i + '"><span class="n">' + String(i+1).padStart(2,'0') + '</span><span>' + t + '</span></a>';
+  });
+  document.getElementById('menulist').innerHTML = html;
+  document.getElementById('menuclose').addEventListener('click', function(){ toggleMenu(false); });
+  var links = Array.prototype.slice.call(menu.querySelectorAll('a'));
+  function toggleMenu(open){ menu.classList.toggle('open', open); scrim.classList.toggle('on', open); }
+  menubtn.addEventListener('click', function(){ toggleMenu(!menu.classList.contains('open')); });
+  scrim.addEventListener('click', function(){ toggleMenu(false); });
+  links.forEach(function(a){ a.addEventListener('click', function(){ toggleMenu(false); }); });
+
+  /* slide ativo: contador, progresso, revelação, sumário */
+  var active = 0;
+  function setActive(i){
+    active = i; cur.textContent = i + 1; prog.style.width = ((i+1)/tot*100) + '%';
+    links.forEach(function(a){ a.classList.toggle('on', +a.getAttribute('data-i') === i); });
+    var on = menu.querySelector('a.on'); if (on && menu.classList.contains('open')) on.scrollIntoView({block:'nearest'});
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.12 });
+    slides.forEach(function(s){ io.observe(s); });
+  } else { slides.forEach(function(s){ s.classList.add('in'); }); }
+  /* slide ativo = o que ocupa mais área visível */
+  var ticking = false;
+  function recompute(){
+    ticking = false; var vh = window.innerHeight, best = 0, bi = active;
+    slides.forEach(function(s, i){ var r = s.getBoundingClientRect(); var vis = Math.min(r.bottom, vh) - Math.max(r.top, 0); if (vis > best) { best = vis; bi = i; } });
+    if (bi !== active) setActive(bi);
+  }
+  window.addEventListener('scroll', function(){ if (!ticking) { ticking = true; requestAnimationFrame(recompute); } }, { passive: true });
+  window.addEventListener('resize', recompute); recompute(); slides[0].classList.add('in');
+
+  /* ajuste de escala: cada slide cabe na tela (como num programa de apresentação) */
+  function fitAll(){
+    if (window.innerWidth <= 900) { slides.forEach(function(s){ var i = s.querySelector('.inner'); if (i) i.style.zoom = ''; s.classList.add('fit'); }); return; }
+    var avail = window.innerHeight - 52;
+    slides.forEach(function(s){
+      var inner = s.querySelector('.inner'); if (!inner || s.classList.contains('divider') || s.classList.contains('cover')) return;
+      inner.style.zoom = '1'; s.classList.remove('fit');
+      var need = inner.scrollHeight; if (need <= avail) { s.classList.add('fit'); return; }
+      var z = Math.max(0.75, avail / need); inner.style.zoom = z.toFixed(3);
+      if (inner.scrollHeight * z <= avail + 2) s.classList.add('fit');
+    });
+  }
+  window.addEventListener('resize', fitAll); window.addEventListener('load', fitAll); fitAll();
+  /* cards expansíveis abrem em janela sobreposta, sem mudar a altura do slide */
+  var modal = document.getElementById('modal'), mbody = document.getElementById('modal-body'), mtitle = document.getElementById('modal-title');
+  function closeModal(){ modal.classList.remove('on'); mbody.innerHTML = ''; }
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  modal.addEventListener('click', function(ev){ if (ev.target === modal) closeModal(); });
+  document.querySelectorAll('details.more').forEach(function(d){
+    var s = d.querySelector('summary'), body = d.querySelector(':scope > div');
+    s.addEventListener('click', function(ev){
+      if (window.matchMedia('print').matches) return;
+      ev.preventDefault(); d.open = false;
+      mtitle.textContent = s.textContent.replace(/^detalhes\s*—\s*/i, '').trim() || 'detalhes';
+      mbody.innerHTML = body.innerHTML; modal.classList.add('on'); attachCopy(mbody);
+    });
+  });
+  /* botão de copiar em código, terminal e prompt */
+  function attachCopy(root){
+    root.querySelectorAll('.code, .term').forEach(function(box){
+      if (box.querySelector(':scope > .copy')) return;
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'copy'; b.textContent = 'copiar'; b.setAttribute('aria-label', 'Copiar conteúdo');
+      b.addEventListener('click', function(){
+        var pre = box.querySelector('pre'); var txt = pre ? pre.innerText : box.innerText;
+        function done(){ b.textContent = 'copiado ✓'; b.classList.add('ok'); setTimeout(function(){ b.textContent = 'copiar'; b.classList.remove('ok'); }, 1600); }
+        if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(txt).then(done, function(){ fallback(txt); done(); }); } else { fallback(txt); done(); }
+      });
+      box.appendChild(b);
+    });
+  }
+  function fallback(txt){ var ta = document.createElement('textarea'); ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch(e){} document.body.removeChild(ta); }
+  attachCopy(document);
+  /* popover do glossário */
+  var gpop = document.getElementById('gpop'), gcur = null;
+  function showPop(el){ gpop.innerHTML = '<b>' + el.getAttribute('data-t') + '</b>' + el.getAttribute('data-d'); gpop.classList.add('on');
+    var r = el.getBoundingClientRect(), pw = Math.min(340, window.innerWidth - 24); gpop.style.maxWidth = pw + 'px';
+    var left = Math.max(12, Math.min(r.left, window.innerWidth - pw - 12)); gpop.style.left = left + 'px';
+    var ph = gpop.offsetHeight; var top = r.bottom + 8; if (top + ph > window.innerHeight - 8) top = Math.max(8, r.top - ph - 8); gpop.style.top = top + 'px'; gcur = el; }
+  function hidePop(){ gpop.classList.remove('on'); gcur = null; }
+  document.querySelectorAll('.gterm').forEach(function(el){
+    el.addEventListener('mouseenter', function(){ showPop(el); }); el.addEventListener('mouseleave', hidePop);
+    el.addEventListener('focus', function(){ showPop(el); }); el.addEventListener('blur', hidePop);
+    el.addEventListener('click', function(ev){ ev.stopPropagation(); if (gcur === el) hidePop(); else showPop(el); });
+  });
+  document.addEventListener('click', function(){ if (gcur) hidePop(); }); window.addEventListener('scroll', function(){ if (gcur) hidePop(); }, { passive: true });
+
+  function go(i){ i = Math.max(0, Math.min(tot-1, i)); window.scrollTo({ top: slides[i].offsetTop, behavior: 'smooth' }); }
+  document.getElementById('prev').addEventListener('click', function(){ go(active-1); });
+  document.getElementById('next').addEventListener('click', function(){ go(active+1); });
+  document.addEventListener('keydown', function(ev){
+    if (ev.target && /input|textarea|select/i.test(ev.target.tagName)) return;
+    if (ev.key === 'ArrowDown' || ev.key === 'PageDown' || ev.key === ' ' || ev.key === 'ArrowRight') { ev.preventDefault(); go(active+1); }
+    else if (ev.key === 'ArrowUp' || ev.key === 'PageUp' || ev.key === 'ArrowLeft') { ev.preventDefault(); go(active-1); }
+    else if (ev.key === 'Home') { go(0); } else if (ev.key === 'End') { go(tot-1); }
+    else if (ev.key === 'Escape') { toggleMenu(false); closeModal(); }
+  });
+
+  /* checklist — conveniência por leitor, só neste navegador */
+  var KEY = 'mirandastech-gemini-notebook-checklist-v1';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('#checklist input[type=checkbox]'));
+  var status = document.getElementById('check-status');
+  function load(){ try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e){ return {}; } }
+  function save(st){ try { localStorage.setItem(KEY, JSON.stringify(st)); } catch(e){} }
+  function paint(){ var n = 0; boxes.forEach(function(b){ var it = b.closest('.check-item'); if (b.checked) { n++; it.classList.add('done'); } else { it.classList.remove('done'); } }); if (status) status.textContent = n + ' de ' + boxes.length; }
+  var st = load(); boxes.forEach(function(b){ b.checked = !!st[b.id]; b.addEventListener('change', function(){ var s = load(); s[b.id] = b.checked; save(s); paint(); }); }); paint();
+  var reset = document.getElementById('check-reset'); if (reset) reset.addEventListener('click', function(){ boxes.forEach(function(b){ b.checked = false; }); save({}); paint(); });
+})();
+</script>
